@@ -67,7 +67,7 @@ def normalize_data(data, num_days=5, buffer=0.1):
 	Y_max = []
 	for data in data_by_day:
 		create_traiing_data(data, Y_min, Y_max, training_data_points, min_max_period)
-	Y_min, = np.array(Y_min), np.array(Y_max)
+	Y_min, Y_max= np.array(Y_min), np.array(Y_max)
 	return X, Y_min, Y_max
 
 
