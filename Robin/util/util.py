@@ -1,10 +1,10 @@
 import logging
 import os
 from datetime import date, datetime
-
+import pytz
 import robin_stocks.robinhood.authentication as auth
 
-PACKAGE_ROOT = "/Users/meow/Desktop/Robin"
+PACKAGE_ROOT = "/Users/meow/Desktop/AlgoTrade/Robin"
 
 
 def log_info(msg):
@@ -36,7 +36,7 @@ def get_yyyymmdd_date():
 
 
 def get_current_hhmmss_time():
-    return datetime.now().strftime("%H%M%S")
+    return datetime.now(pytz.timezone('America/New_York')).strftime("%H%M%S")
 
 
 def is_pre_hour():
