@@ -10,12 +10,14 @@ import robin_stocks.robinhood.stocks as robin_stocks
 
 from util.util import log_info, log_error, login
 
+
 @dataclass
-class HjkMatadata:
+class HjkMetadata:
 	interval: int
 	smooth_parameters: list[int]
 	std_interval: int
 	std_multiplier: int
+
 
 class StockHistoricalCollector(Thread):
 	def __init__(self, symbols):
@@ -71,7 +73,7 @@ class StockHistoricalCollector(Thread):
 					log_error(f"Error when logging in: {login_error}.")
 			time.sleep(self._sleep_interval)
 
-	def get_historical_info_by_symbol(self, symbol: str, metadata_list: list[HjkMatadata]) -> Optional[pd.DataFrame]:
+	def get_historical_info_by_symbol(self, symbol: str, metadata_list: list[HjkMetadata]) -> Optional[pd.DataFrame]:
 		if symbol in self._stock_info:
 			df = self._stock_info[symbol]
 			for metadata in metadata_list:

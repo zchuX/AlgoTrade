@@ -1,6 +1,6 @@
 from time import sleep
 
-from lib.stock_historical_collector import StockHistoricalCollector, HjkMatadata
+from lib.stock_historical_collector import StockHistoricalCollector, HjkMetadata
 from util.util import *
 
 
@@ -20,9 +20,9 @@ def intraday_collecting():
 					prices = worker.get_historical_info_by_symbol(
 						stock,
 						[
-							HjkMatadata(interval=8, smooth_parameters=[3, 3], std_interval=21, std_multiplier=3),
-							HjkMatadata(interval=21, smooth_parameters=[5], std_interval=37, std_multiplier=2),
-							HjkMatadata(interval=55, smooth_parameters=[5], std_interval=0, std_multiplier=0)
+							HjkMetadata(interval=8, smooth_parameters=[3, 3], std_interval=21, std_multiplier=3),
+							HjkMetadata(interval=21, smooth_parameters=[5], std_interval=37, std_multiplier=2),
+							HjkMetadata(interval=55, smooth_parameters=[5], std_interval=0, std_multiplier=0)
 						])
 					print(stock, prices)
 				except Exception as e:
