@@ -24,9 +24,10 @@ class StockHistoricalCollector(Thread):
 		super().__init__()
 		log_info(f"Collecting stock historical information for: {', '.join(symbols)}.")
 		self._symbols = symbols
-		self._interval = 'hour'
+		self._interval = '5minute'
+		self._period = 'week'
 		self._sleep_interval = 3600
-		self._stock_info: dict[str, pd.DataFrame] = self._collect_stock_info('month')
+		self._stock_info: dict[str, pd.DataFrame] = self._collect_stock_info(self._period)
 		self._running = True
 
 	"""
@@ -50,7 +51,7 @@ class StockHistoricalCollector(Thread):
 
 		for symbol in stock_info_dataframes:
 			stock_info_dataframes[symbol]['begins_at'] = pd.to_datetime(stock_info_dataframes[symbol]['begins_at'])
-			stock_info_dataframes[symbol].set_index('begins_at', inplace=True)
+			stock_info_dataframes[symbol].set_index('begins_at', inplace=False)
 			stock_info_dataframes[symbol]['close_price'] = stock_info_dataframes[symbol]['close_price'].astype(float)
 			stock_info_dataframes[symbol]['low_price'] = stock_info_dataframes[symbol]['low_price'].astype(float)
 			stock_info_dataframes[symbol]['high_price'] = stock_info_dataframes[symbol]['high_price'].astype(float)
@@ -58,14 +59,14 @@ class StockHistoricalCollector(Thread):
 
 	def stop(self):
 		self._running = False
-		log_info(f"Stop collecting historical info for {', '.join(self._symbols)}.")
+		log_info(f"stop collecting historical info for {', '.join(self._symbols)}.")
 
 	def run(self):
 		while self._running:
 			try:
-				self._stock_info = self._collect_stock_info('month')
+				self._stock_info = self._collect_stock_info(self._period)
 			except Exception as e:
-				log_error(f"Error when updating historical info: {e}.")
+				log_error(f"Error when updating historical info.", e)
 				try:
 					login()
 					log_info(f"Re-login to the account.")

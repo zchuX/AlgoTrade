@@ -57,5 +57,5 @@ def is_trading_hour():
     return "093000" <= hhmmss < "160000"
 
 
-def log_error(msg):
-    logging.error(f"[{get_yyyymmdd_date()} {get_current_hhmmss_time()}] {msg}.")
+def log_error(msg, e):
+    logging.error(f"[{get_yyyymmdd_date()} {get_current_hhmmss_time()}] {msg}.", e)

@@ -24,7 +24,7 @@ def intraday_collecting():
 						f.write(','.join([str(price) for price in prices]))
 						f.write(',')
 				except Exception as e:
-					log_error(f"Exception when getting stock price for {stock}: {e}.")
+					log_error(f"Exception when getting stock price for {stock}.", e)
 			sleep(30)
 		log_info(f"Current time is not trading hour: {get_current_hhmmss_time()}.")
 	finally:
