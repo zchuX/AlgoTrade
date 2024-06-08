@@ -18,6 +18,11 @@ class HjkMetadata:
 	std_interval: int
 	std_multiplier: int
 
+@dataclass
+class BollingerMetadata:
+	window: int
+	no_of_std: float
+
 
 class StockHistoricalCollector(Thread):
 	def __init__(self, symbols):
@@ -52,6 +57,7 @@ class StockHistoricalCollector(Thread):
 		for symbol in stock_info_dataframes:
 			stock_info_dataframes[symbol]['begins_at'] = pd.to_datetime(stock_info_dataframes[symbol]['begins_at'])
 			stock_info_dataframes[symbol].set_index('begins_at', inplace=False)
+			stock_info_dataframes[symbol]['open_price'] = stock_info_dataframes[symbol]['open_price'].astype(float)
 			stock_info_dataframes[symbol]['close_price'] = stock_info_dataframes[symbol]['close_price'].astype(float)
 			stock_info_dataframes[symbol]['low_price'] = stock_info_dataframes[symbol]['low_price'].astype(float)
 			stock_info_dataframes[symbol]['high_price'] = stock_info_dataframes[symbol]['high_price'].astype(float)
@@ -74,7 +80,12 @@ class StockHistoricalCollector(Thread):
 					log_error(f"Error when logging in: {login_error}.")
 			time.sleep(self._sleep_interval)
 
-	def get_historical_info_by_symbol(self, symbol: str, metadata_list: list[HjkMetadata]) -> Optional[pd.DataFrame]:
+	def get_historical_info_by_symbol(
+		self,
+		symbol: str,
+		metadata_list: list[HjkMetadata],
+		bollinger: BollingerMetadata
+	) -> Optional[pd.DataFrame]:
 		if symbol in self._stock_info:
 			df = self._stock_info[symbol]
 			for metadata in metadata_list:
@@ -90,5 +101,9 @@ class StockHistoricalCollector(Thread):
 				if metadata.std_multiplier > 0:
 					df[term_key] = df[term_key] + df['close_price'].rolling(
 						window=metadata.std_interval).std() * metadata.std_multiplier
+			df['SMA'] = df['close_price'].rolling(bollinger.window).mean()
+			df['STD'] = df['close_price'].rolling(bollinger.window).std()
+			df['upper_band'] = df['SMA'] + bollinger.no_of_std * df['STD']
+			df['lower_band'] = df['SMA'] - bollinger.no_of_std * df['STD']
 			return df
 		return None

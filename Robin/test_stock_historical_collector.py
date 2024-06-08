@@ -1,6 +1,6 @@
 from time import sleep
 
-from lib.stock_historical_collector import StockHistoricalCollector, HjkMetadata
+from lib.stock_historical_collector import StockHistoricalCollector, HjkMetadata, BollingerMetadata
 from util.util import *
 
 from matplotlib import pyplot as plt
@@ -31,34 +31,33 @@ def intraday_collecting():
 							HjkMetadata(interval=8, smooth_parameters=[3, 3], std_interval=21, std_multiplier=3),
 							HjkMetadata(interval=21, smooth_parameters=[5], std_interval=37, std_multiplier=2),
 							HjkMetadata(interval=55, smooth_parameters=[5], std_interval=0, std_multiplier=0)
-						])
+						],
+						BollingerMetadata(window=20, no_of_std=2)
+					)
 					# Plotting the lines
 					plt.figure(figsize=(12, 6))
-					df['index'] = list(range(len(df)))
-					plt.plot(df['index'], df['term_line_8'], label='short_term', color='blue')
-					plt.plot(df['index'], df['term_line_21'], label='mid_term', color='grey')
-					plt.plot(df['index'], df['term_line_55'], label='long_term', color='purple')
-
 
 					# Golden Pit indicator
 					golden_pit = (df['term_line_8'] < 15) & (df['term_line_21'] < 15) & (df['term_line_55'] < 15)
 
 					for i in range(len(golden_pit) - 1):
 						if golden_pit[i]:
-							plt.axvspan(df['index'][i], df['index'][i + 1], color='yellow', alpha=0.3)
+							plt.axvspan(range(len(df))[i], range(len(df))[i + 1], color='yellow', alpha=0.3)
 
-					# Adding labels for bottom and Top
+					resistance_signals = []
 					for i in range(len(df)):
-						if df['term_line_21'][i] < 20:
-							plt.annotate('X', (df['index'][i], df['term_line_21'][i]),
-										 textcoords="offset points", xytext=(0, -10), ha='center', color='green',
-										 fontsize=8)
-						if df['term_line_21'][i] > 80:
-							plt.annotate('X', (df['index'][i], df['term_line_21'][i]),
-										 textcoords="offset points", xytext=(0, 10), ha='center', color='red',
-										 fontsize=8)
+						if df['close_price'][i] >= df['upper_band'][i]:
+							resistance_signals.append((range(len(df))[i], df['close_price'][i]))
 
+					plt.plot(range(len(df)), df['close_price'], label='Close Price')
+					plt.plot(range(len(df)), df['upper_band'], label='Upper Band', linestyle='--', color='red')
+					plt.plot(range(len(df)), df['SMA'], label='Middle Band (SMA)', linestyle='--', color='blue')
+					plt.plot(range(len(df)), df['lower_band'], label='Lower Band', linestyle='--', color='green')
+					plt.scatter([signal[0] for signal in resistance_signals],
+								[signal[1] for signal in resistance_signals], color='red', label='Resistance Signal',
+								marker='o')
 					plt.legend()
+
 					plt.title(f'Trading Indicators {stock}')
 					plt.xlabel('Date')
 					plt.ylabel('Value')

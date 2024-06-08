@@ -1,6 +1,7 @@
 import time
 
 from threading import Thread
+from typing import Optional
 
 import robin_stocks.robinhood.stocks as robin_stocks
 from util.util import log_info, log_error, login
@@ -52,3 +53,10 @@ class StockInfoCollector(Thread):
 		idx = self._symbols.index(symbol)
 		result, self._price_store[idx] = self._price_store[idx], []
 		return result
+
+	@staticmethod
+	def get_current_price_by_symbol(symbol) -> Optional[float]:
+		prices = robin_stocks.get_latest_price(symbol, includeExtendedHours=True)
+		if prices:
+			return float(robin_stocks.get_latest_price(symbol, includeExtendedHours=True)[0])
+		return None

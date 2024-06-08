@@ -14,13 +14,7 @@ class OrderDetails:
     symbol: str
     instrument_id: str
     price: float
-    position: float
-
-
-@dataclass
-class StkPosition:
-    symbol: str
-    position: float
+    share: float
 
 
 class TradeExecutor(object):
@@ -34,7 +28,7 @@ class TradeExecutor(object):
                                     symbol=self.symbol,
                                     instrument_id=buy_result["instrument_id"],
                                     price=float(buy_result["price"]),
-                                    position=float(buy_result["quantity"]))
+                                    share=float(buy_result["quantity"]))
         log_info(f"buy_stock: {order_detail}")
         return order_detail
 
@@ -44,11 +38,11 @@ class TradeExecutor(object):
                                     symbol=self.symbol,
                                     instrument_id=sell_result["instrument_id"],
                                     price=float(sell_result["price"]),
-                                    position=-float(sell_result["quantity"]))
+                                    share=-float(sell_result["quantity"]))
         log_info(f"sell_stock: {order_detail}")
         return order_detail
 
-    def get_stock_positions(self) -> typing.Optional[StkPosition]:
+    def get_stock_positions(self) -> float:
         positions: typing.List[dict] = robin.account.get_open_stock_positions()
         for position in positions:
             instrument_id = position["instrument_id"]
@@ -57,12 +51,17 @@ class TradeExecutor(object):
                 if cur_symbol == self.symbol:
                     self.instrument_id = instrument_id
             if instrument_id == self.instrument_id:
-                return StkPosition(symbol=self.symbol, position=float(position["quantity"]))
-        return None
+                return float(position["quantity"])
+        return 0
 
     @staticmethod
-    def get_cash_position():
+    def get_cash_position() -> float:
         cash_val = float(robin.profiles.load_account_profile()["cash"])
         if cash_val > MIN_CASH_VALUE:
             return cash_val - MIN_CASH_VALUE
         raise Exception("Insufficient fund.")
+
+    @staticmethod
+    def get_net_worth() -> float:
+        net_worth = float(robin.profiles.load_portfolio_profile()["equity"])
+        return net_worth
