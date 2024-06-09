@@ -11,6 +11,7 @@ DEFAULT_PORTIONS = 20
 
 @dataclass
 class OrderMetadata:
+	uuid: str
 	stock: str
 	time: datetime
 	price: float
@@ -78,12 +79,13 @@ class TradingAgent(object):
 		for symbol in self._symbols:
 			self.clean_all_position(symbol=symbol)
 
-	def buy(self, symbol) -> OrderMetadata:
+	def buy(self, symbol: str, uuid: str) -> OrderMetadata:
 		order: OrderDetails = self._executor[symbol].buy_stock(self._portion_size)
 		self._remain_portion -= 1
 		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
 		return OrderMetadata(
+			uuid=uuid,
 			stock=symbol,
 			time=get_datetime(),
 			price=order.price,
@@ -113,6 +115,9 @@ class TradingAgent(object):
 			return pnl / starting_price - 1
 		else:
 			return 0
+
+	def get_active_orders(self, symbol):
+		return self._active_orders[symbol]
 
 	def snapshot(self) -> TradeSnapshot:
 		start_net_value = self._start_trade_snapshot.daily_start_net_value

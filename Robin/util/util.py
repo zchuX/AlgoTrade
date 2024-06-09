@@ -16,8 +16,12 @@ def set_log_level(level="INFO"):
 
 
 def login():
-	auth.login(username=os.getenv("robin_user_name"), password=os.getenv("robin_password"), expiresIn=720000,
-			   by_sms=True)
+	auth.login(
+		username=os.getenv("robin_user_name"),
+		password=os.getenv("robin_password"),
+		expiresIn=720000,
+		by_sms=True
+	)
 	log_info("logged in robin account.")
 
 
