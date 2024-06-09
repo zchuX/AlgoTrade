@@ -1,6 +1,6 @@
 from time import sleep
 
-from lib.stock_historical_collector import StockHistoricalCollector, HjkMetadata, BollingerMetadata, RSIMetadata
+from trading.stock_historical_collector import StockHistoricalCollector, HjkMetadata, BollingerMetadata, RSIMetadata
 from util.util import *
 
 from matplotlib import pyplot as plt

@@ -2,8 +2,8 @@ import typing
 from dataclasses import dataclass
 from datetime import datetime
 
-from lib.trade_executor import TradeExecutor, OrderDetails
-from lib.stock_info_collector import StockInfoCollector
+from trading.trade_executor import TradeExecutor, OrderDetails
+from trading.stock_info_collector import StockInfoCollector
 from util.util import get_datetime
 
 DEFAULT_PORTIONS = 20

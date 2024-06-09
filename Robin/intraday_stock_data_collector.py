@@ -1,6 +1,6 @@
 from time import sleep
 
-from lib.stock_info_collector import StockInfoCollector
+from trading.stock_info_collector import StockInfoCollector
 from util.util import *
 
 

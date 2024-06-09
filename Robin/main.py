@@ -2,8 +2,8 @@ import os
 import logging
 import time
 
-from lib.stock_info_collector import StockInfoCollector
-from lib.trade_executor import TradeExecutor
+from trading.stock_info_collector import StockInfoCollector
+from trading.trade_executor import TradeExecutor
 from util.util import login, logout, set_log_level
 
 

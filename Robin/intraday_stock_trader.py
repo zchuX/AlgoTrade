@@ -3,9 +3,9 @@ import glob
 import json
 
 from time import sleep
-from lib.stock_historical_collector import StockHistoricalCollector, HjkMetadata, BollingerMetadata
-from lib.stock_info_collector import StockInfoCollector
-from lib.trading_agent import TradingAgent, TradeSnapshot
+from trading.stock_historical_collector import StockHistoricalCollector, HjkMetadata, BollingerMetadata
+from trading.stock_info_collector import StockInfoCollector
+from trading.trading_agent import TradingAgent, TradeSnapshot
 from util.util import *
 
 TEST_MODE = True
