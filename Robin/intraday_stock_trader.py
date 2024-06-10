@@ -3,14 +3,19 @@ import glob
 import json
 
 from time import sleep
+from datetime import timedelta
 
-from trading.base_strategy import Action, ActionMetadata
+import dateutil
+
+from trading.base_strategy import Action, ActionMetadata, BaseStrategy
 from trading.stock_historical_collector import StockHistoricalCollector
 from trading.strategies.alpha_strategy import AlphaStrategy
 from trading.trading_agent import TradingAgent, TradeSnapshot, OrderMetadata
 from util.util import *
 
-TEST_MODE = True
+TEST_MODE = False
+
+TEST_DATE_TIME = datetime(2024, 6, 5, 9, 30, 0, tzinfo=pytz.timezone('US/Eastern'))
 
 
 def prepare_trading_agent(stocks: list[str]):
@@ -22,37 +27,83 @@ def prepare_trading_agent(stocks: list[str]):
 		with open(latest_snapshot, 'r') as openfile:
 			json_object = json.load(openfile)
 			trade_snapshot = TradeSnapshot(**json_object)
+			trade_snapshot.time = dateutil.parser.parse(trade_snapshot.time)
+			for symbol in trade_snapshot.active_orders:
+				trade_snapshot.active_orders[symbol] = [
+					OrderMetadata(**order) for order in trade_snapshot.active_orders[symbol]
+				]
 	else:
 		log_info(f"No active trading snapshot, create an empty one..")
 	trading_agent = TradingAgent(
 		symbols=stocks,
-		trade_snapshot=trade_snapshot
+		trade_snapshot=trade_snapshot,
+		test_mode=TEST_MODE
 	)
 	return trading_agent
 
 
-def persist_trading_snapshot(trading_agent: TradingAgent):
-	snapshot: TradeSnapshot = trading_agent.snapshot()
+def persist_trading_snapshot(
+	trading_agent: TradingAgent,
+	prices: Optional[dict[str, float]] = None,
+	time: Optional[datetime] = None):
+	snapshot: TradeSnapshot = trading_agent.test_snapshot(prices, time) if TEST_MODE else trading_agent.snapshot()
 	snapshot_json = json.dumps(dataclasses.asdict(snapshot), default=json_serial, indent=4)
-	output_file = f"{PACKAGE_ROOT}/Data/TradingSnapshot/snapshot.{get_yyyymmdd_hhmmss_time()}.json"
+	output_file = f"{PACKAGE_ROOT}/Data/TradingSnapshot/snapshot.{get_yyyymmdd_hhmmss_time(time)}.json"
 	log_info(f"Writing trading snapshot to: {output_file}...")
 	with open(output_file, 'w') as outfile:
 		outfile.write(snapshot_json)
 
 
 def persist_order_details(order: OrderMetadata):
-	order_json = json.dumps(dataclasses.asdict(order), default=json_serial, indent=4)
 	output_file = f"{PACKAGE_ROOT}/Data/Orders/{order.stock}.{get_yyyymmdd_date()}.json"
+	orders = []
+	if os.path.exists(output_file):
+		with open(output_file, 'r') as f:
+			json_data = f.read()
+		orders = json.loads(json_data)
+	orders.append(dataclasses.asdict(order))
+	orders_json = json.dumps(orders, default=json_serial, indent=4)
 	log_info(f"Writing order to: {output_file}...")
-	with open(output_file, 'a') as outfile:
-		outfile.write(order_json)
+	with open(output_file, 'w') as outfile:
+		outfile.write(orders_json)
+
+
+def run_test_cycles(
+	stocks: list[str],
+	trading_agent: TradingAgent,
+	stock_info_worker: StockHistoricalCollector,
+	strategy: BaseStrategy
+):
+	log_info("Running test cycles...")
+	time = TEST_DATE_TIME
+	last_snapshot_time = time
+	prices = dict()
+	while is_trading_hour(time):
+		log_info(F"CurrentTime: {time}")
+		for stock in stocks:
+			df = stock_info_worker.get_historical_info_by_symbol(stock)
+			action: ActionMetadata = strategy.action(stock, time)
+			price = list(df.loc[df["begins_at"] < time - timedelta(minutes=5)]["close_price"])[-1]
+			prices[stock] = price
+			if action.action == Action.BUY:
+				persist_order_details(trading_agent.test_buy(
+					symbol=stock, uuid=action.uuid, price=price, time=time))
+			elif action.action == Action.SELL:
+				persist_order_details(
+					trading_agent.test_clean_all_position(symbol=stock, uuid=action.uuid, price=price, time=time))
+		time += timedelta(minutes=5)
+		sleep(1)
+		if last_snapshot_time + timedelta(hours=1) < time:
+			persist_trading_snapshot(trading_agent=trading_agent, prices=prices, time=time)
+			last_snapshot_time = time
+	log_info(f"Current time is not trading hour: {get_current_hhmmss_time()}.")
+	persist_trading_snapshot(trading_agent=trading_agent, prices=prices, time=time)
 
 
 def intraday_collecting():
 	with open(f"{PACKAGE_ROOT}/Config/stock_list.txt") as f:
 		stocks = f.read().split(",")
 	yyyymmdd_date = get_yyyymmdd_date()
-	mkdir(f"{PACKAGE_ROOT}/Data/{yyyymmdd_date}")
 	login()
 	trading_agent = prepare_trading_agent(stocks)
 
@@ -72,7 +123,11 @@ def intraday_collecting():
 	sleep(5)
 
 	try:
-		while is_trading_hour() or TEST_MODE:
+		if TEST_MODE:
+			run_test_cycles(stocks, trading_agent, stock_info_worker, alpha_strategy)
+
+		last_snapshot_time = datetime.now()
+		while is_trading_hour():
 			for stock in stocks:
 				try:
 					action: ActionMetadata = alpha_strategy.action(stock)
@@ -82,10 +137,16 @@ def intraday_collecting():
 						persist_order_details(trading_agent.clean_all_position(symbol=stock, uuid=action.uuid))
 				except Exception as e:
 					log_error(f"Exception when getting stock price for {stock}.", e)
-			sleep(30)
+			sleep(60)
+			if last_snapshot_time + timedelta(hours=1) < datetime.now():
+				persist_trading_snapshot(trading_agent=trading_agent)
+				last_snapshot_time = datetime.now()
 		log_info(f"Current time is not trading hour: {get_current_hhmmss_time()}.")
+	except Exception as e:
+		log_error(f"Exception running the main cycle...", e)
 	finally:
-		persist_trading_snapshot(trading_agent=trading_agent)
+		if not TEST_MODE:
+			persist_trading_snapshot(trading_agent=trading_agent)
 		stock_info_worker.stop()
 		stock_info_worker.join()
 		# stock_real_time_price_worker.stop()

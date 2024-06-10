@@ -65,7 +65,6 @@ class StockHistoricalCollector(Thread):
 		for symbol in stock_info_dataframes:
 			updated_df = stock_info_dataframes[symbol]
 			updated_df['begins_at'] = pd.to_datetime(updated_df['begins_at'])
-			updated_df.set_index('begins_at', inplace=False)
 			updated_df['open_price'] = updated_df['open_price'].astype(float)
 			updated_df['close_price'] = updated_df['close_price'].astype(float)
 			updated_df['low_price'] = updated_df['low_price'].astype(float)

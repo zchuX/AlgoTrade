@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+from typing import Optional
+
 import pandas as pd
 
 from trading.base_strategy import BaseStrategy, ActionMetadata, Action
@@ -12,7 +15,7 @@ class AlphaStrategy(BaseStrategy):
 	def __init__(self, stock_info_collector: StockHistoricalCollector, trading_agent: TradingAgent):
 		super().__init__(stock_info_collector, trading_agent)
 
-	def action(self, symbol: str) -> ActionMetadata:
+	def action(self, symbol: str, test_datetime: Optional[datetime] = None) -> ActionMetadata:
 		should_buy = super().should_buy(symbol)
 		should_sell = super().should_sell(symbol)
 		action: Action = Action.HOLD
@@ -30,6 +33,9 @@ class AlphaStrategy(BaseStrategy):
 			rsi_metadata=RSIMetadata(window_size=14)
 		)
 
+		if test_datetime:
+			df = df.loc[df["begins_at"] < test_datetime - timedelta(minutes=5)]
+
 		active_orders: list[OrderMetadata] = self._trade_agent.get_active_orders(symbol)
 		uuids = list(df['uuid'])
 		uuid = uuids[-1]
@@ -45,10 +51,16 @@ class AlphaStrategy(BaseStrategy):
 				if active_order.uuid in uuids[-3:]:
 					should_buy = False
 					break
-			golden_pit = list((df['term_line_8'] < 15) & (df['term_line_21'] < 15) & (df['term_line_55'] < 15))
-			over_sold = list(df['rsi'] < 30)
-			should_buy = should_buy and golden_pit[-1] and over_sold[-1]
-			if should_buy:
+			golden_pit = list((df['term_line_8'] < 15) & (df['term_line_21'] < 15) & (df['term_line_55'] < 15))[-1]
+			over_sold = list(df['rsi'] < 30)[-1]
+			if should_buy and golden_pit and over_sold:
+				log_info(
+					f"Buying stock {symbol} with --- "
+					f"term_line_8: {list(df['term_line_8'])[-1]}, "
+					f"term_line_21: {list(df['term_line_21'])[-1]}, "
+					f"term_line_55: {list(df['term_line_55'])[-1]}, "
+					f"rsi: {list(df['rsi'])[-1]}"
+				)
 				action = Action.BUY
 				return ActionMetadata(action=action, amount=1, uuid=uuid)
 
@@ -57,18 +69,21 @@ class AlphaStrategy(BaseStrategy):
 			Sell stock only when any of the following condition is met
 			1. RSI > 70
 			2. resistance_signal is observed (bollinger)
-			3. Earn 50% original price
-			4. Loss from the high_price exceeds 10%
+			3. Earn 25% original price
+			4. Loss from the high_price exceeds 5%
 			"""
 			over_buy = list(df['rsi'] > 70)[-1]
+			max_buy_price = max([active_order.price for active_order in active_orders])
 			resistance_signals = list(df['close_price'])[-1] >= list(df['upper_band'])[-1]
-			take_benefit = list(df['close_price'])[-1] >= active_orders[-1].price * 1.5
-			take_loss = list(df['close_price'])[-1] <= 0.9 * max(list(df['high_price'])[list(df['uuid']).index(uuid):])
-			if resistance_signals or over_buy or take_benefit or take_loss:
+			resistance_signal_valid = list(df['upper_band'])[-1] >= max_buy_price
+			take_benefit = list(df['close_price'])[-1] >= max_buy_price * 1.25
+			take_loss = list(df['close_price'])[-1] <= 0.95 * max(list(df['high_price'])[list(df['uuid']).index(uuid):])
+			if (resistance_signals and resistance_signal_valid) or over_buy or take_benefit or take_loss:
 				log_info(
-					f"Selling stock with --- "
+					f"Selling stock {symbol} with --- "
 					f"over_buy: {over_buy}, "
 					f"resistance_signals: {resistance_signals}, "
+					f"resistance_signal_valid: {resistance_signal_valid}, "
 					f"take_benefit: {take_benefit}, "
 					f"take_loss: {take_loss}"
 				)

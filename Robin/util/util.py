@@ -1,6 +1,8 @@
 import logging
 import os
 from datetime import date, datetime
+from typing import Optional
+
 import pytz
 import robin_stocks.robinhood.authentication as auth
 
@@ -39,16 +41,22 @@ def get_yyyymmdd_date():
 	return get_datetime().strftime("%Y%m%d")
 
 
-def get_yyyymmdd_hhmmss_time():
-	return get_datetime().strftime("%Y%m%d-%H%M%S")
+def get_yyyymmdd_hhmmss_time(time: Optional[datetime]):
+	if time is None:
+		return get_datetime().strftime("%Y%m%d-%H%M%S")
+	else:
+		return time.strftime("%Y%m%d-%H%M%S")
 
 
 def get_datetime() -> datetime:
-	return datetime.now(pytz.timezone('America/New_York'))
+	return datetime.now(pytz.timezone('US/Eastern'))
 
 
-def get_current_hhmmss_time():
-	return get_datetime().strftime("%H%M%S")
+def get_current_hhmmss_time(time: Optional[datetime] = None):
+	if time is None:
+		return get_datetime().strftime("%H%M%S")
+	else:
+		return time.strftime("%H%M%S")
 
 
 def is_pre_hour():
@@ -64,8 +72,8 @@ def is_late_night():
 	return get_current_hhmmss_time() >= "160000"
 
 
-def is_trading_hour():
-	hhmmss = get_current_hhmmss_time()
+def is_trading_hour(time: Optional[datetime] = None):
+	hhmmss = get_current_hhmmss_time(time)
 	return "093000" <= hhmmss < "160000"
 
 
