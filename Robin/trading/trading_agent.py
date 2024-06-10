@@ -72,8 +72,20 @@ class TradingAgent(object):
 
 		self._start_trade_snapshot = trade_snapshot
 
-	def clean_all_position(self, symbol):
-		self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
+	def clean_all_position(self, symbol, uuid: str):
+		order: OrderDetails = self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
+		self._remain_portion += len(self._active_orders[symbol])
+		self._cur_position[symbol] = 0
+		self._cash_position = TradeExecutor.get_cash_position()
+		self._active_orders[symbol] = []
+		return OrderMetadata(
+			uuid=uuid,
+			stock=symbol,
+			time=get_datetime(),
+			price=order.price,
+			share=-order.share,
+			remain_portion=self._remain_portion
+		)
 
 	def clean_all_positions(self):
 		for symbol in self._symbols:
@@ -84,7 +96,7 @@ class TradingAgent(object):
 		self._remain_portion -= 1
 		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
-		return OrderMetadata(
+		order_metadata = OrderMetadata(
 			uuid=uuid,
 			stock=symbol,
 			time=get_datetime(),
@@ -92,6 +104,8 @@ class TradingAgent(object):
 			share=order.share,
 			remain_portion=self._remain_portion
 		)
+		self._active_orders[symbol].append(order_metadata)
+		return order_metadata
 
 	def _get_pnl(self, symbol):
 		cur_price = StockInfoCollector.get_current_price_by_symbol(symbol=symbol)

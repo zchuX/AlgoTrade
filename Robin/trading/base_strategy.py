@@ -16,6 +16,7 @@ class Action(Enum):
 class ActionMetadata:
 	action: Action
 	amount: int
+	uuid: str
 
 
 class BaseStrategy(object):
@@ -26,7 +27,6 @@ class BaseStrategy(object):
 	"""
 	Avoid duplicate purchase here
 	"""
-
 	def should_buy(self, symbol: str) -> bool:
 		stock_historical_data: pd.DataFrame = self._stock_info_collector.get_historical_info_by_symbol(symbol=symbol)
 		active_orders: list[OrderMetadata] = self._trade_agent.get_active_orders(symbol)
@@ -42,7 +42,6 @@ class BaseStrategy(object):
 	"""
 	Avoid selling without active order
 	"""
-
 	def should_sell(self, symbol: str) -> bool:
 		stock_historical_data: pd.DataFrame = self._stock_info_collector.get_historical_info_by_symbol(symbol=symbol)
 		active_orders: list[OrderMetadata] = self._trade_agent.get_active_orders(symbol)

@@ -6,15 +6,15 @@ from typing import Optional
 import robin_stocks.robinhood.stocks as robin_stocks
 from util.util import log_info, log_error, login
 
-"""
-StockInfoCollector
-@params:
-symbols: Stock symbols
-interval: price collection time interval
-"""
-
 
 class StockInfoCollector(Thread):
+	"""
+	StockInfoCollector
+	@params:
+	symbols: Stock symbols
+	interval: price collection time interval
+	"""
+
 	def __init__(self, symbols, interval=5):
 		super().__init__()
 		log_info(f"Collecting stock prices for: {', '.join(symbols)}.")
@@ -34,12 +34,12 @@ class StockInfoCollector(Thread):
 			try:
 				self._get_prices()
 			except Exception as e:
-				log_error(f"Error when updating stock prices: {e}.")
+				log_error(f"Error when updating stock prices.", e)
 				try:
 					login()
 					log_info(f"Re-login to the account.")
 				except Exception as login_error:
-					log_error(f"Error when logging in: {login_error}.")
+					log_error(f"Error when logging in.", login_error)
 			time.sleep(max(0, int(self._interval - (time.time() - start_time))))
 
 	def stop(self):
