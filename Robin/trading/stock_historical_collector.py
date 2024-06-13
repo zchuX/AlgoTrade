@@ -34,11 +34,11 @@ class RSIMetadata:
 class StockHistoricalCollector(Thread):
 	def __init__(self, symbols):
 		super().__init__()
-		log_info(f"Collecting stock historical information for: {', '.join(symbols)}.")
+		log_info(f"[StockHistoricalCollector] Collecting stock historical information for: {', '.join(symbols)}.")
 		self._symbols = symbols
 		self._interval = '5minute'
 		self._period = 'week'
-		self._sleep_interval = 3600
+		self._sleep_interval = 60
 		self._stock_info: dict[str, pd.DataFrame] = dict()
 		self._collect_stock_info(self._period)
 		self._running = True
@@ -73,28 +73,31 @@ class StockHistoricalCollector(Thread):
 			if symbol not in self._stock_info:
 				self._stock_info[symbol] = updated_df
 			else:
-				updated_df = updated_df[updated_df.index > self._stock_info[symbol].index[-1]]
+				updated_df = updated_df[updated_df['begins_at'] > list(self._stock_info[symbol]['begins_at'])[-1]]
 				if len(updated_df) > 0:
-					log_info(f"Appending updated historical info for stock {symbol}: {updated_df}...")
+					log_info(
+						f"[StockHistoricalCollector] "
+						f"Appending updated historical info for stock {symbol}: {updated_df}..."
+					)
 					self._stock_info[symbol] = pd.concat([self._stock_info[symbol], updated_df])
 
 		return stock_info_dataframes
 
 	def stop(self):
 		self._running = False
-		log_info(f"stop collecting historical info for {', '.join(self._symbols)}.")
+		log_info(f"[StockHistoricalCollector] Stop collecting historical info for {', '.join(self._symbols)}.")
 
 	def run(self):
 		while self._running:
 			try:
 				self._collect_stock_info(self._period)
 			except Exception as e:
-				log_error(f"Error when updating historical info.", e)
+				log_error(f"[StockHistoricalCollector] Error when updating historical info.", e)
 				try:
 					login()
-					log_info(f"Re-login to the account.")
+					log_info(f"[StockHistoricalCollector] Re-login to the account.")
 				except Exception as login_error:
-					log_error(f"Error when logging in.", login_error)
+					log_error(f"[StockHistoricalCollector] Error when logging in.", login_error)
 			time.sleep(self._sleep_interval)
 
 	def get_historical_info_by_symbol(

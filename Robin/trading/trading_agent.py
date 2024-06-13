@@ -1,12 +1,15 @@
 import typing
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from time import sleep
 
 from trading.trade_executor import TradeExecutor, OrderDetails, MIN_CASH_VALUE
 from trading.stock_info_collector import StockInfoCollector
 from util.util import get_datetime, log_info
 
-DEFAULT_PORTIONS = 10
+TIMEOUT = 25
+
+DEFAULT_PORTION_SIZE = 300
 
 
 @dataclass
@@ -46,20 +49,34 @@ class TradingAgent(object):
 		self._cur_position: dict[str, float] = {
 			symbol: self._executor[symbol].get_stock_positions() for symbol in symbols
 		}
-		self._cash_position = TradeExecutor.get_cash_position()
+		self._cash_position: float = TradeExecutor.get_cash_position()
+		self._remain_portion: int = int(self._cash_position) // DEFAULT_PORTION_SIZE
 
-		if trade_snapshot is None:
+		if trade_snapshot is None or get_datetime() - timedelta(hours=6, minutes=30) > trade_snapshot.time:
 			net_value = TradeExecutor.get_net_worth()
+			positions: typing.List[dict] = TradeExecutor.get_all_stock_positions()
+			active_orders = {symbol: [] for symbol in symbols}
+			for position in positions:
+				symbol = TradeExecutor.get_symbol(position["instrument"])
+				active_orders[symbol].append(
+					OrderMetadata(
+						uuid="00000000-0000-0000-0000-0000000000",
+						stock=symbol,
+						time=get_datetime(),
+						price=float(position["average_buy_price"]),
+						share=float(position["quantity"]),
+						remain_portion=-1,
+				))
 			trade_snapshot = TradeSnapshot(
 				time=get_datetime(),
 				daily_start_net_value=net_value,
 				current_net_value=net_value,
 				daily_pnl=0,
 				daily_pnl_percentage=0,
-				remain_portion=DEFAULT_PORTIONS,
+				remain_portion=self._remain_portion,
 				positions=self._cur_position,
 				cash_position=self._cash_position,
-				active_orders={symbol: [] for symbol in symbols},
+				active_orders=active_orders,
 				active_pnl={symbol: 0 for symbol in symbols},
 				active_pnl_percentage={symbol: 0 for symbol in symbols}
 			)
@@ -71,8 +88,7 @@ class TradingAgent(object):
 				for active_order in trade_snapshot.active_orders[symbol]:
 					self._cur_position[symbol] += active_order.share
 
-		self._remain_portion = trade_snapshot.remain_portion
-		self._portion_size: float = self._cash_position / trade_snapshot.remain_portion
+		self._portion_size: float = DEFAULT_PORTION_SIZE
 		self._active_orders: dict[str, list[OrderMetadata]] = trade_snapshot.active_orders
 		for symbol in symbols:
 			if symbol not in self._active_orders:
@@ -91,7 +107,7 @@ class TradingAgent(object):
 			stock=symbol,
 			time=get_datetime(),
 			price=order.price,
-			share=-order.share,
+			share=order.share,
 			remain_portion=self._remain_portion
 		)
 		log_info(f"Completed order: {sell_order}")
@@ -115,16 +131,28 @@ class TradingAgent(object):
 		return sell_order
 
 	def buy(self, symbol: str, uuid: str) -> OrderMetadata:
+		self._cash_position: float = TradeExecutor.get_cash_position()
+		self._remain_portion: int = int(self._cash_position) // DEFAULT_PORTION_SIZE
+		if self._remain_portion <= 0:
+			raise Exception(f"Insufficient fund buying: {symbol}")
 		order: OrderDetails = self._executor[symbol].buy_stock(self._portion_size)
 		self._remain_portion -= 1
+		cur_position = self._cur_position[symbol]
+		time_out = 0
+		while self._executor[symbol].get_stock_positions() <= cur_position and time_out < TIMEOUT:
+			sleep(0.2)
+			time_out += 1
 		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
+		if self._cur_position[symbol] <= cur_position:
+			self._remain_portion += 1
+			log_info(f"Order with {symbol} did not go through: {order}!!")
 		order_metadata = OrderMetadata(
 			uuid=uuid,
 			stock=symbol,
 			time=get_datetime(),
 			price=order.price,
-			share=order.share,
+			share=self._executor[symbol].get_stock_positions() - cur_position,
 			remain_portion=self._remain_portion
 		)
 		self._active_orders[symbol].append(order_metadata)
@@ -133,7 +161,7 @@ class TradingAgent(object):
 
 	def test_buy(self, symbol: str, uuid: str, price: float, time: datetime) -> OrderMetadata:
 		self._remain_portion -= 1
-		share = self._portion_size/price
+		share = self._portion_size / price
 		self._cur_position[symbol] += share
 		self._cash_position -= self._portion_size
 		order_metadata = OrderMetadata(
@@ -141,7 +169,7 @@ class TradingAgent(object):
 			stock=symbol,
 			time=time,
 			price=price,
-			share=self._portion_size/price,
+			share=self._portion_size / price,
 			remain_portion=self._remain_portion
 		)
 		self._active_orders[symbol].append(order_metadata)
@@ -176,9 +204,12 @@ class TradingAgent(object):
 	def get_active_orders(self, symbol):
 		return self._active_orders[symbol]
 
+	def get_position(self, symbol):
+		return self._cur_position[symbol]
+
 	def snapshot(self) -> TradeSnapshot:
 		start_net_value = self._start_trade_snapshot.current_net_value
-		if datetime.now() - timedelta(hours=6, minutes=30) < self._start_trade_snapshot.time:
+		if get_datetime() - timedelta(hours=6, minutes=30) < self._start_trade_snapshot.time:
 			start_net_value = self._start_trade_snapshot.daily_start_net_value
 		net_value = TradeExecutor.get_net_worth()
 		return TradeSnapshot(
@@ -186,13 +217,13 @@ class TradingAgent(object):
 			daily_start_net_value=start_net_value,
 			current_net_value=net_value,
 			daily_pnl=net_value - start_net_value,
-			daily_pnl_percentage=(net_value - start_net_value) / (start_net_value - MIN_CASH_VALUE) * 100,
+			daily_pnl_percentage=round((net_value - start_net_value) / (start_net_value - MIN_CASH_VALUE) * 100, 2),
 			remain_portion=self._remain_portion,
 			positions=self._cur_position,
 			cash_position=self._cash_position,
 			active_orders=self._active_orders,
-			active_pnl={symbol: self._get_pnl(symbol) for symbol in self._symbols},
-			active_pnl_percentage={symbol: self._get_pnl_percentage(symbol) for symbol in self._symbols}
+			active_pnl={symbol: round(self._get_pnl(symbol), 2) for symbol in self._symbols},
+			active_pnl_percentage={symbol: round(self._get_pnl_percentage(symbol), 2) for symbol in self._symbols}
 		)
 
 	def test_snapshot(self, prices: dict[str, float], time: datetime) -> TradeSnapshot:
@@ -206,11 +237,13 @@ class TradingAgent(object):
 			daily_start_net_value=start_net_value,
 			current_net_value=net_value,
 			daily_pnl=net_value - start_net_value,
-			daily_pnl_percentage=(net_value - start_net_value) / (start_net_value - MIN_CASH_VALUE) * 100,
+			daily_pnl_percentage=round((net_value - start_net_value) / (start_net_value - MIN_CASH_VALUE) * 100, 2),
 			remain_portion=self._remain_portion,
 			positions=self._cur_position,
 			cash_position=self._cash_position,
 			active_orders=self._active_orders,
-			active_pnl={symbol: self._get_pnl(symbol, prices[symbol]) for symbol in self._symbols},
-			active_pnl_percentage={symbol: self._get_pnl_percentage(symbol, prices[symbol]) for symbol in self._symbols}
+			active_pnl={symbol: round(self._get_pnl(symbol, prices[symbol]), 2) for symbol in self._symbols},
+			active_pnl_percentage={
+				symbol: round(self._get_pnl_percentage(symbol, prices[symbol]), 2) for symbol in self._symbols
+			}
 		)

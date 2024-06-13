@@ -79,7 +79,7 @@ def run_test_cycles(
 	last_snapshot_time = time
 	prices = dict()
 	while is_trading_hour(time):
-		log_info(F"CurrentTime: {time}")
+		log_info(f"CurrentTime: {time}")
 		for stock in stocks:
 			df = stock_info_worker.get_historical_info_by_symbol(stock)
 			action: ActionMetadata = strategy.action(stock, time)
@@ -103,7 +103,6 @@ def run_test_cycles(
 def intraday_collecting():
 	with open(f"{PACKAGE_ROOT}/Config/stock_list.txt") as f:
 		stocks = f.read().split(",")
-	yyyymmdd_date = get_yyyymmdd_date()
 	login()
 	trading_agent = prepare_trading_agent(stocks)
 
@@ -116,9 +115,6 @@ def intraday_collecting():
 	log_info("Start Running....")
 	stock_info_worker = StockHistoricalCollector(stocks)
 	stock_info_worker.start()
-
-	# stock_real_time_price_worker = StockInfoCollector(stocks)
-	# stock_real_time_price_worker.start()
 	alpha_strategy = AlphaStrategy(stock_info_worker, trading_agent)
 	sleep(5)
 
@@ -127,7 +123,9 @@ def intraday_collecting():
 			run_test_cycles(stocks, trading_agent, stock_info_worker, alpha_strategy)
 
 		last_snapshot_time = datetime.now()
+		persist_trading_snapshot(trading_agent=trading_agent)
 		while is_trading_hour():
+			log_info("Running loop....")
 			for stock in stocks:
 				try:
 					action: ActionMetadata = alpha_strategy.action(stock)
@@ -137,10 +135,11 @@ def intraday_collecting():
 						persist_order_details(trading_agent.clean_all_position(symbol=stock, uuid=action.uuid))
 				except Exception as e:
 					log_error(f"Exception when getting stock price for {stock}.", e)
-			sleep(60)
 			if last_snapshot_time + timedelta(hours=1) < datetime.now():
 				persist_trading_snapshot(trading_agent=trading_agent)
 				last_snapshot_time = datetime.now()
+			log_info("Completing loop...")
+			sleep(60)
 		log_info(f"Current time is not trading hour: {get_current_hhmmss_time()}.")
 	except Exception as e:
 		log_error(f"Exception running the main cycle...", e)
@@ -149,8 +148,6 @@ def intraday_collecting():
 			persist_trading_snapshot(trading_agent=trading_agent)
 		stock_info_worker.stop()
 		stock_info_worker.join()
-		# stock_real_time_price_worker.stop()
-		# stock_real_time_price_worker.join()
 
 
 def main():
