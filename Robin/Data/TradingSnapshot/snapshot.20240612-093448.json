@@ -1,0 +1,160 @@
+{
+    "time": "2024-06-12T09:34:41.731339-04:00",
+    "daily_start_net_value": 57307.5497,
+    "current_net_value": 57434.8719,
+    "daily_pnl": 127.32219999999506,
+    "daily_pnl_percentage": 0.22,
+    "remain_portion": 186,
+    "positions": {
+        "TSLA": 0,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 1.7,
+        "PLTR": 0,
+        "BA": 25.83,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 1.4688,
+        "HOOD": 10.19,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 36.36,
+        "AMD": 1.41,
+        "ARM": 0,
+        "BABA": 23.8,
+        "CELH": 0
+    },
+    "cash_position": 55977.47,
+    "active_orders": {
+        "TSLA": [],
+        "NVDA": [],
+        "META": [],
+        "MSFT": [],
+        "IBM": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "IBM",
+                "time": "2024-06-12T09:17:20.018475-04:00",
+                "price": 167.1824,
+                "share": 1.7,
+                "remain_portion": -1
+            }
+        ],
+        "PLTR": [],
+        "BA": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "BA",
+                "time": "2024-06-12T09:17:20.018439-04:00",
+                "price": 183.548,
+                "share": 25.83,
+                "remain_portion": -1
+            }
+        ],
+        "SNOW": [],
+        "GOOGL": [],
+        "COIN": [],
+        "SMCI": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "SMCI",
+                "time": "2024-06-12T09:17:20.018582-04:00",
+                "price": 769.458,
+                "share": 1.4688,
+                "remain_portion": -1
+            }
+        ],
+        "HOOD": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "HOOD",
+                "time": "2024-06-12T09:17:20.018512-04:00",
+                "price": 22.1855,
+                "share": 10.19,
+                "remain_portion": -1
+            }
+        ],
+        "CRWD": [],
+        "LULU": [],
+        "PANW": [],
+        "C": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "C",
+                "time": "2024-06-12T09:17:20.018361-04:00",
+                "price": 59.3566,
+                "share": 36.36,
+                "remain_portion": -1
+            }
+        ],
+        "AMD": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "AMD",
+                "time": "2024-06-12T09:17:20.018201-04:00",
+                "price": 160.3688,
+                "share": 1.41,
+                "remain_portion": -1
+            }
+        ],
+        "ARM": [],
+        "BABA": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "BABA",
+                "time": "2024-06-12T09:17:20.018547-04:00",
+                "price": 78.0269,
+                "share": 23.8,
+                "remain_portion": -1
+            }
+        ],
+        "CELH": []
+    },
+    "active_pnl": {
+        "TSLA": 0,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 7.83,
+        "PLTR": 0,
+        "BA": 60.27,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 30.91,
+        "HOOD": 15.74,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 47.39,
+        "AMD": -0.41,
+        "ARM": 0,
+        "BABA": 7.21,
+        "CELH": 0
+    },
+    "active_pnl_percentage": {
+        "TSLA": 0,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 2.79,
+        "PLTR": 0,
+        "BA": 1.27,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 2.76,
+        "HOOD": 6.96,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 2.15,
+        "AMD": -0.25,
+        "ARM": 0,
+        "BABA": 0.36,
+        "CELH": 0
+    }
+}
