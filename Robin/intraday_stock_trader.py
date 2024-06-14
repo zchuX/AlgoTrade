@@ -15,7 +15,7 @@ from util.util import *
 
 TEST_MODE = False
 
-TEST_DATE_TIME = datetime(2024, 6, 5, 9, 30, 0, tzinfo=pytz.timezone('US/Eastern'))
+TEST_DATE_TIME = datetime(2024, 6, 10, 9, 30, 0, tzinfo=pytz.timezone('US/Eastern'))
 
 
 def prepare_trading_agent(stocks: list[str]):
@@ -121,18 +121,32 @@ def intraday_collecting():
 	try:
 		if TEST_MODE:
 			run_test_cycles(stocks, trading_agent, stock_info_worker, alpha_strategy)
+			return
 
 		last_snapshot_time = datetime.now()
 		persist_trading_snapshot(trading_agent=trading_agent)
-		while is_trading_hour():
+		while is_trading_hour() or is_after_hour():
+			is_extended_hour = is_after_hour() or is_pre_hour()
 			log_info("Running loop....")
 			for stock in stocks:
 				try:
 					action: ActionMetadata = alpha_strategy.action(stock)
 					if action.action == Action.BUY:
-						persist_order_details(trading_agent.buy(symbol=stock, uuid=action.uuid))
+						persist_order_details(
+							trading_agent.buy(
+								symbol=stock,
+								uuid=action.uuid,
+								extended_hour=is_extended_hour
+							)
+						)
 					elif action.action == Action.SELL:
-						persist_order_details(trading_agent.clean_all_position(symbol=stock, uuid=action.uuid))
+						persist_order_details(
+							trading_agent.clean_all_position(
+								symbol=stock,
+								uuid=action.uuid,
+								extended_hour=is_extended_hour
+							)
+						)
 				except Exception as e:
 					log_error(f"Exception when getting stock price for {stock}.", e)
 			if last_snapshot_time + timedelta(hours=1) < datetime.now():
@@ -161,6 +175,8 @@ def main():
 			log_info("Not trading hour, sleep 30 minutes....")
 			sleep(1800)
 		intraday_collecting()
+		if TEST_MODE:
+			break
 
 
 if __name__ == "__main__":

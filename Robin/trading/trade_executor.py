@@ -35,6 +35,50 @@ class TradeExecutor(object):
         log_info(f"buy_stock: {order_detail}")
         return order_detail
 
+    def limit_buy_stock(self, amount: float) -> OrderDetails:
+        price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
+        price += min(0.05, price * 0.001)
+        quantity = int(amount / price)
+        current_cash = TradeExecutor.get_total_cash_position()
+        buy_result: dict = robin.orders.order_buy_limit(
+            symbol=self.symbol,
+            quantity=quantity,
+            limitPrice=price,
+            extendedHours=True)
+        log_info(f"limit_buy_result: {buy_result}")
+
+        while current_cash - TradeExecutor.get_total_cash_position() <= price * quantity * 0.95:
+            sleep(1)
+        order_detail = OrderDetails(order_id=buy_result["id"],
+                                    symbol=self.symbol,
+                                    instrument_id=buy_result["instrument_id"],
+                                    price=price,
+                                    share=quantity)
+        log_info(f"limit_buy_stock: {order_detail}")
+        return order_detail
+
+    def limit_sell_stock(self, quantity: float) -> OrderDetails:
+        price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
+        price -= min(0.05, price * 0.001)
+        quantity = int(quantity)
+        current_cash = TradeExecutor.get_total_cash_position()
+        sell_result: dict = robin.orders.order_sell_limit(
+            symbol=self.symbol,
+            quantity=quantity,
+            limitPrice=price,
+            extendedHours=True)
+        log_info(f"limit_sell_result: {sell_result}")
+
+        while TradeExecutor.get_total_cash_position() - current_cash <= price * quantity * 0.95:
+            sleep(1)
+        order_detail = OrderDetails(order_id=sell_result["id"],
+                                    symbol=self.symbol,
+                                    instrument_id=sell_result["instrument_id"],
+                                    price=price,
+                                    share=-quantity)
+        log_info(f"limit_sell_stock: {order_detail}")
+        return order_detail
+
     def sell_stock(self, shares: float) -> OrderDetails:
         current_cash = TradeExecutor.get_total_cash_position()
         price = StockInfoCollector.get_current_price_by_symbol(self.symbol)

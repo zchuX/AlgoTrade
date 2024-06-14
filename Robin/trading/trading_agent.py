@@ -66,7 +66,7 @@ class TradingAgent(object):
 						price=float(position["average_buy_price"]),
 						share=float(position["quantity"]),
 						remain_portion=-1,
-				))
+					))
 			trade_snapshot = TradeSnapshot(
 				time=get_datetime(),
 				daily_start_net_value=net_value,
@@ -96,8 +96,11 @@ class TradingAgent(object):
 
 		self._start_trade_snapshot = trade_snapshot
 
-	def clean_all_position(self, symbol, uuid: str):
-		order: OrderDetails = self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
+	def clean_all_position(self, symbol, uuid: str, extended_hour: bool = False):
+		if extended_hour:
+			order: OrderDetails = self._executor[symbol].limit_sell_stock(self._executor[symbol].get_stock_positions())
+		else:
+			order: OrderDetails = self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
 		self._remain_portion += len(self._active_orders[symbol])
 		self._cur_position[symbol] = 0
 		self._cash_position = TradeExecutor.get_cash_position()
@@ -130,12 +133,16 @@ class TradingAgent(object):
 		log_info(f"Completed order: {sell_order}")
 		return sell_order
 
-	def buy(self, symbol: str, uuid: str) -> OrderMetadata:
+	def buy(self, symbol: str, uuid: str, extended_hour: bool = False) -> OrderMetadata:
 		self._cash_position: float = TradeExecutor.get_cash_position()
 		self._remain_portion: int = int(self._cash_position) // DEFAULT_PORTION_SIZE
 		if self._remain_portion <= 0:
 			raise Exception(f"Insufficient fund buying: {symbol}")
-		order: OrderDetails = self._executor[symbol].buy_stock(self._portion_size)
+
+		if extended_hour:
+			order = self._executor[symbol].limit_buy_stock(self._portion_size)
+		else:
+			order: OrderDetails = self._executor[symbol].buy_stock(self._portion_size)
 		self._remain_portion -= 1
 		cur_position = self._cur_position[symbol]
 		time_out = 0
