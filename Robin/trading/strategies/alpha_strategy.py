@@ -24,6 +24,29 @@ class AlphaStrategy(BaseStrategy):
 		super().__init__(stock_info_collector, trading_agent)
 
 	@staticmethod
+	def gold_cross(df: pd.DataFrame) -> List[bool]:
+		close_prices = df['close_price'].values
+		low_prices = df['low_price'].values
+		high_prices = df['high_price'].values
+
+		def sma(values: np.array, window):
+			return np.array(pd.Series(values).rolling(window).mean())
+
+		def cross(series1, series2):
+			return (series1 > series2) & (np.roll(series1, 1) <= np.roll(series2, 1))
+
+		AL = (close_prices + low_prices + high_prices) / 3
+		AO = sma(AL, 5) - sma(AL, 13)
+		BBD = (AO - sma(AO, 3)) * 100
+		BBD_support = sma(BBD, 5)
+
+		# Crossovers
+		rsv1 = BBD
+		rsv2 = BBD_support
+
+		return list(cross(rsv1, rsv2))
+
+	@staticmethod
 	def main_force_data(df: pd.DataFrame) -> MainForceResult:
 		close_prices = df['close_price'].values
 		open_prices = df['open_price'].values
@@ -48,12 +71,12 @@ class AlphaStrategy(BaseStrategy):
 
 		# Perform calculations
 		var1 = ref((low_prices + open_prices + close_prices + high_prices) / 4, 1)
-		with np.errstate(divide='ignore'):
+		with np.errstate(divide='ignore', invalid='ignore'):
 			var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10)
 		var3 = ema(var2, 10)
 		var4 = llv(low_prices, 33)
 		var5 = ema(np.where(low_prices <= var4, var3, 0), 3)
-		with np.errstate(divide='ignore'):
+		with np.errstate(divide='ignore', invalid='ignore'):
 			var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
 		var31 = ema(var21, 10)
 		var41 = hhv(high_prices, 33)
@@ -87,6 +110,7 @@ class AlphaStrategy(BaseStrategy):
 
 		active_orders: list[OrderMetadata] = self._trade_agent.get_active_orders(symbol)
 		main_force_data: MainForceResult = AlphaStrategy.main_force_data(df)
+		golden_cross: list[bool] = AlphaStrategy.gold_cross(df)
 		uuids = list(df['uuid'])
 		uuid = uuids[-1]
 
@@ -102,15 +126,16 @@ class AlphaStrategy(BaseStrategy):
 					should_buy = False
 					break
 			golden_pit = list((df['term_line_8'] < 15) & (df['term_line_21'] < 15) & (df['term_line_55'] < 15))[-1]
-			over_sold = list(df['rsi'] < 30)[-1]
-			if should_buy and golden_pit and over_sold:
+			# over_sold = list(df['rsi'] < 30)[-1]
+			if should_buy and golden_pit and (golden_cross[-1] or main_force_data.main_force_entry[-1]):
 				log_info(
 					f"Buying stock {symbol} with --- "
 					f"term_line_8: {list(df['term_line_8'])[-1]}, "
 					f"term_line_21: {list(df['term_line_21'])[-1]}, "
 					f"term_line_55: {list(df['term_line_55'])[-1]}, "
-					f"rsi: {list(df['rsi'])[-1]}, "
-					f"main_force_entry: {main_force_data.main_force_entry[-1]}"
+					f"main_force_entry: {main_force_data.main_force_entry[-1]}, "
+					f"golden_cross: {golden_cross[-1]}, "
+					f"rsi: {list(df['rsi'])[-1]}"
 				)
 				action = Action.BUY
 				return ActionMetadata(action=action, amount=1, uuid=uuid)
@@ -118,32 +143,33 @@ class AlphaStrategy(BaseStrategy):
 		if should_sell:
 			"""
 			Sell stock only when any of the following condition is met
-			1. RSI > 70
+			1. RSI > 80
 			2. resistance_signal is observed (bollinger)
 			3. Earn 25% original price
 			4. Loss from the high_price exceeds 5%
 			"""
-			over_buy = list(df['rsi'] > 70)[-1]
+			over_buys = list(df['rsi'] > 80)
 			max_buy_price = max([active_order.price for active_order in active_orders])
 			resistance_signals = [df['close_price'][i] >= df['upper_band'][i] for i in range(len(df))]
 			main_force_pulling_up = main_force_data.main_force_pulling_up
 			has_resistance_signal = False
+			over_buy = False
 			if not main_force_pulling_up[-1]:
 				i = 2
 				while main_force_pulling_up[-i] and i <= len(main_force_pulling_up):
 					if resistance_signals[-i]:
 						has_resistance_signal = True
+					if over_buys[-i]:
+						over_buy = True
 					i += 1
 			sell_price_valid = list(df['upper_band'])[-1] >= max_buy_price
-			take_benefit = list(df['close_price'])[-1] >= max_buy_price * 1.25
 			take_loss = list(df['close_price'])[-1] <= 0.95 * max(list(df['high_price'])[list(df['uuid']).index(uuid):])
-			if (has_resistance_signal and sell_price_valid) or over_buy or take_benefit or take_loss:
+			if ((has_resistance_signal or over_buy) and sell_price_valid) or take_loss:
 				log_info(
 					f"Selling stock {symbol} with --- "
 					f"over_buy: {over_buy}, "
 					f"resistance_signals: {has_resistance_signal}, "
 					f"sell_price_valid: {sell_price_valid}, "
-					f"take_benefit: {take_benefit}, "
 					f"take_loss: {take_loss}"
 				)
 				action = Action.SELL

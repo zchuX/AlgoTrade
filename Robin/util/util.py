@@ -61,7 +61,12 @@ def get_current_hhmmss_time(time: Optional[datetime] = None):
 
 def is_pre_hour():
 	hhmmss_time = get_current_hhmmss_time()
-	return "093000" > hhmmss_time >= "090000"
+	return "093000" > hhmmss_time >= "073000"
+
+
+def preparing_trade():
+	hhmmss_time = get_current_hhmmss_time()
+	return "073000" > hhmmss_time >= "070000"
 
 
 def is_after_hour():
@@ -70,7 +75,7 @@ def is_after_hour():
 
 
 def is_early_morning():
-	return get_current_hhmmss_time() < "090000"
+	return get_current_hhmmss_time() < "070000"
 
 
 def is_late_night():

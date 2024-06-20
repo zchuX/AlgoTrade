@@ -1,0 +1,257 @@
+{
+    "time": "2024-06-14T17:34:03.687275-04:00",
+    "daily_start_net_value": 57419.9524,
+    "current_net_value": 57396.1519,
+    "daily_pnl": -23.80050000000483,
+    "daily_pnl_percentage": -0.04,
+    "remain_portion": 165,
+    "positions": {
+        "TSLA": 1.0,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 0.0,
+        "PLTR": 0,
+        "BA": 3.39,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": 26.5,
+        "CRWD": 0,
+        "LULU": 1.9345,
+        "PANW": 1.8962,
+        "C": 0,
+        "AMD": 0,
+        "ARM": 0,
+        "BABA": 19.72,
+        "CELH": 9.91
+    },
+    "cash_position": 49550.74,
+    "active_orders": {
+        "TSLA": [
+            {
+                "uuid": "cee0303b-4133-4e23-bf5e-046a5809dd52",
+                "stock": "TSLA",
+                "time": "2024-06-14T17:06:58.406814-04:00",
+                "price": 177.88000000000002,
+                "share": 1.0,
+                "remain_portion": 165
+            }
+        ],
+        "NVDA": [],
+        "META": [],
+        "MSFT": [],
+        "IBM": [
+            {
+                "uuid": "0add3478-ea96-4e30-ae31-79c874f13eaf",
+                "stock": "IBM",
+                "time": "2024-06-14T16:41:51.334825-04:00",
+                "price": 168.55,
+                "share": 0.0,
+                "remain_portion": 165
+            }
+        ],
+        "PLTR": [],
+        "BA": [
+            {
+                "uuid": "ed439d09-3abf-4453-9ba9-6aefe14a3e81",
+                "stock": "BA",
+                "time": "2024-06-14T10:20:46.571780-04:00",
+                "price": 177.78,
+                "share": 1.69,
+                "remain_portion": 178
+            },
+            {
+                "uuid": "d2f4f102-8f44-4cf2-88d8-7b149547846f",
+                "stock": "BA",
+                "time": "2024-06-14T10:36:02.402597-04:00",
+                "price": 177.1,
+                "share": 1.0,
+                "remain_portion": 178
+            },
+            {
+                "uuid": "f973a7eb-1b45-432f-badc-4c37357d47b8",
+                "stock": "BA",
+                "time": "2024-06-14T14:11:26.440946-04:00",
+                "price": 176.82,
+                "share": 1.7000000000000002,
+                "remain_portion": 171
+            },
+            {
+                "uuid": "403c6d33-2717-4435-993a-52df6ca86661",
+                "stock": "BA",
+                "time": "2024-06-14T14:26:33.966380-04:00",
+                "price": 176.72,
+                "share": 1.0,
+                "remain_portion": 169
+            }
+        ],
+        "SNOW": [],
+        "GOOGL": [],
+        "COIN": [],
+        "SMCI": [],
+        "HOOD": [
+            {
+                "uuid": "dac01e9b-8619-4439-842b-17d3c7df3c07",
+                "stock": "HOOD",
+                "time": "2024-06-14T11:41:25.603917-04:00",
+                "price": 22.75,
+                "share": 13.19,
+                "remain_portion": 176
+            },
+            {
+                "uuid": "ba9cf650-ad2d-4dbb-a00b-0755e06b93d3",
+                "stock": "HOOD",
+                "time": "2024-06-14T14:11:28.943977-04:00",
+                "price": 22.54,
+                "share": 0.3100000000000005,
+                "remain_portion": 170
+            },
+            {
+                "uuid": "edcfda3b-830f-403a-83ef-c79881c73cd7",
+                "stock": "HOOD",
+                "time": "2024-06-14T14:26:35.606380-04:00",
+                "price": 22.44,
+                "share": 13.0,
+                "remain_portion": 168
+            }
+        ],
+        "CRWD": [],
+        "LULU": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "LULU",
+                "time": "2024-06-14T09:08:33.899380-04:00",
+                "price": 310.1008,
+                "share": 1.9345,
+                "remain_portion": -1
+            },
+            {
+                "uuid": "9266b97d-8850-469b-9943-0680ff8b5540",
+                "stock": "LULU",
+                "time": "2024-06-14T09:30:23.208214-04:00",
+                "price": 305.46,
+                "share": 0.0,
+                "remain_portion": 180
+            }
+        ],
+        "PANW": [
+            {
+                "uuid": "ed4a037d-d9e1-4e64-8fae-42e7310cde9f",
+                "stock": "PANW",
+                "time": "2024-06-14T12:25:41.604081-04:00",
+                "price": 316.5,
+                "share": 0.9479,
+                "remain_portion": 173
+            },
+            {
+                "uuid": "47cfaad9-396d-48e6-8374-be41049d1785",
+                "stock": "PANW",
+                "time": "2024-06-14T12:40:59.063236-04:00",
+                "price": 316.36,
+                "share": 0.9483000000000001,
+                "remain_portion": 172
+            }
+        ],
+        "C": [],
+        "AMD": [],
+        "ARM": [],
+        "BABA": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "BABA",
+                "time": "2024-06-14T09:08:33.899328-04:00",
+                "price": 76.5044,
+                "share": 15.68,
+                "remain_portion": -1
+            },
+            {
+                "uuid": "c2af0c89-1ac4-424d-8d4d-4c5a0468681a",
+                "stock": "BABA",
+                "time": "2024-06-14T09:30:32.928939-04:00",
+                "price": 74.27,
+                "share": 0.0,
+                "remain_portion": 179
+            },
+            {
+                "uuid": "d1504fba-c5e3-4d6d-b4e5-9c3c215f00fd",
+                "stock": "BABA",
+                "time": "2024-06-14T12:06:34.994894-04:00",
+                "price": 73.34,
+                "share": 8.129999999999999,
+                "remain_portion": 174
+            }
+        ],
+        "CELH": [
+            {
+                "uuid": "f6fb62c4-d516-4263-a4c5-28c3801af896",
+                "stock": "CELH",
+                "time": "2024-06-14T14:45:49.521235-04:00",
+                "price": 60.86,
+                "share": 4.93,
+                "remain_portion": 167
+            },
+            {
+                "uuid": "ffd14fe3-b8d0-4513-a958-87ba5121e9d0",
+                "stock": "CELH",
+                "time": "2024-06-14T15:26:02.335056-04:00",
+                "price": 60.26,
+                "share": 4.98,
+                "remain_portion": 166
+            },
+            {
+                "uuid": "4252bbeb-32a9-45dd-b3cb-06906e28bafb",
+                "stock": "CELH",
+                "time": "2024-06-14T15:46:23.189809-04:00",
+                "price": 59.92,
+                "share": 0.0,
+                "remain_portion": 166
+            }
+        ]
+    },
+    "active_pnl": {
+        "TSLA": -0.06,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 0.0,
+        "PLTR": 0,
+        "BA": -0.35,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": -3.59,
+        "CRWD": 0,
+        "LULU": -7.91,
+        "PANW": 1.08,
+        "C": 0,
+        "AMD": 0,
+        "ARM": 0,
+        "BABA": -45.81,
+        "CELH": -6.23
+    },
+    "active_pnl_percentage": {
+        "TSLA": -0.03,
+        "NVDA": 0,
+        "META": 0,
+        "MSFT": 0,
+        "IBM": 0,
+        "PLTR": 0,
+        "BA": -0.04,
+        "SNOW": 0,
+        "GOOGL": 0,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": -0.6,
+        "CRWD": 0,
+        "LULU": -1.32,
+        "PANW": 0.18,
+        "C": 0,
+        "AMD": 0,
+        "ARM": 0,
+        "BABA": -2.55,
+        "CELH": -1.04
+    }
+}

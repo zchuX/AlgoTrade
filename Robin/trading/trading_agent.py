@@ -9,7 +9,7 @@ from util.util import get_datetime, log_info
 
 TIMEOUT = 25
 
-DEFAULT_PORTION_SIZE = 300
+DEFAULT_PORTION_SIZE = 600
 
 
 @dataclass
@@ -101,10 +101,19 @@ class TradingAgent(object):
 			order: OrderDetails = self._executor[symbol].limit_sell_stock(self._executor[symbol].get_stock_positions())
 		else:
 			order: OrderDetails = self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
-		self._remain_portion += len(self._active_orders[symbol])
-		self._cur_position[symbol] = 0
+		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
+		self._remain_portion = int(self._cash_position) // DEFAULT_PORTION_SIZE
 		self._active_orders[symbol] = []
+		if self._cur_position[symbol] > 0:
+			self._active_orders[symbol].append(OrderMetadata(
+						uuid="00000000-0000-0000-0000-0000000000",
+						stock=symbol,
+						time=get_datetime(),
+						price=self._cur_position[symbol],
+						share=self._executor[symbol].get_avg_buy_price(),
+						remain_portion=-1,
+					))
 		sell_order = OrderMetadata(
 			uuid=uuid,
 			stock=symbol,
@@ -143,7 +152,6 @@ class TradingAgent(object):
 			order = self._executor[symbol].limit_buy_stock(self._portion_size)
 		else:
 			order: OrderDetails = self._executor[symbol].buy_stock(self._portion_size)
-		self._remain_portion -= 1
 		cur_position = self._cur_position[symbol]
 		time_out = 0
 		while self._executor[symbol].get_stock_positions() <= cur_position and time_out < TIMEOUT:
@@ -151,9 +159,8 @@ class TradingAgent(object):
 			time_out += 1
 		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
-		if self._cur_position[symbol] <= cur_position:
-			self._remain_portion += 1
-			log_info(f"Order with {symbol} did not go through: {order}!!")
+		self._remain_portion: int = int(self._cash_position) // DEFAULT_PORTION_SIZE
+
 		order_metadata = OrderMetadata(
 			uuid=uuid,
 			stock=symbol,
@@ -162,8 +169,11 @@ class TradingAgent(object):
 			share=self._executor[symbol].get_stock_positions() - cur_position,
 			remain_portion=self._remain_portion
 		)
-		self._active_orders[symbol].append(order_metadata)
-		log_info(f"Completed order: {order_metadata}")
+		if self._cur_position[symbol] <= cur_position and extended_hour == False:
+			log_info(f"Order with {symbol} did not go through: {order}!!")
+		else:
+			self._active_orders[symbol].append(order_metadata)
+			log_info(f"Completed order: {order_metadata}")
 		return order_metadata
 
 	def test_buy(self, symbol: str, uuid: str, price: float, time: datetime) -> OrderMetadata:

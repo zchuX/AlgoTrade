@@ -10,6 +10,8 @@ from util.util import log_info
 
 MIN_CASH_VALUE: float = 0
 
+TIME_OUT = 30
+
 
 @dataclass
 class OrderDetails:
@@ -36,20 +38,24 @@ class TradeExecutor(object):
         return order_detail
 
     def limit_buy_stock(self, amount: float) -> OrderDetails:
-        price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
-        price += min(0.05, price * 0.001)
+        market_price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
+        price = market_price + min(0.05, market_price * 0.001)
         quantity = int(amount / price)
-        current_cash = TradeExecutor.get_total_cash_position()
-        buy_result: dict = robin.orders.order_buy_limit(
+        log_info(f"limit buy stock: {self.symbol} with market price: {market_price} "
+                 f"with limit price: {price}, quantity: {quantity}")
+        buy_result: dict = robin.orders.order(
             symbol=self.symbol,
             quantity=quantity,
+            side="buy",
             limitPrice=price,
-            extendedHours=True)
-        log_info(f"limit_buy_result: {buy_result}")
+            extendedHours=True,
+            market_hours="extended_hours"
+        )
+        order_id = "unknown_id"
+        if "id" in buy_result:
+            order_id = buy_result["id"]
 
-        while current_cash - TradeExecutor.get_total_cash_position() <= price * quantity * 0.95:
-            sleep(1)
-        order_detail = OrderDetails(order_id=buy_result["id"],
+        order_detail = OrderDetails(order_id=order_id,
                                     symbol=self.symbol,
                                     instrument_id=buy_result["instrument_id"],
                                     price=price,
@@ -58,24 +64,39 @@ class TradeExecutor(object):
         return order_detail
 
     def limit_sell_stock(self, quantity: float) -> OrderDetails:
-        price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
-        price -= min(0.05, price * 0.001)
+        pre_positions = self.get_stock_positions()
+        market_price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
+        price = market_price - min(0.05, market_price * 0.001)
         quantity = int(quantity)
         current_cash = TradeExecutor.get_total_cash_position()
-        sell_result: dict = robin.orders.order_sell_limit(
+        log_info(f"limit sell stock: {self.symbol} with market price: {market_price} "
+                 f"with limit price: {price}, quantity: {quantity}")
+        sell_result: dict = robin.orders.order(
             symbol=self.symbol,
             quantity=quantity,
+            side="sell",
             limitPrice=price,
-            extendedHours=True)
-        log_info(f"limit_sell_result: {sell_result}")
+            extendedHours=True,
+            market_hours="extended_hours")
 
-        while TradeExecutor.get_total_cash_position() - current_cash <= price * quantity * 0.95:
+        time_out = 0
+        while TradeExecutor.get_total_cash_position() - current_cash <= price * quantity * 0.95 and time_out < TIME_OUT:
+            time_out += 1
             sleep(1)
-        order_detail = OrderDetails(order_id=sell_result["id"],
+        share = pre_positions - self.get_stock_positions()
+        if share < quantity:
+            log_info(f"Out of {quantity} shares of stocks to be sold, only {share} shares were sold. Cancel the order.")
+            robin.orders.cancel_stock_order(sell_result["id"])
+
+        order_id = "unknown_id"
+        if "id" in sell_result:
+            order_id = sell_result["id"]
+
+        order_detail = OrderDetails(order_id=order_id,
                                     symbol=self.symbol,
                                     instrument_id=sell_result["instrument_id"],
                                     price=price,
-                                    share=-quantity)
+                                    share=share)
         log_info(f"limit_sell_stock: {order_detail}")
         return order_detail
 
@@ -104,6 +125,18 @@ class TradeExecutor(object):
                     self.instrument_id = instrument_id
             if instrument_id == self.instrument_id:
                 return float(position["quantity"])
+        return 0
+
+    def get_avg_buy_price(self) -> float:
+        positions: typing.List[dict] = robin.account.get_open_stock_positions()
+        for position in positions:
+            instrument_id = position["instrument_id"]
+            if self.instrument_id is None:
+                cur_symbol = robin.stocks.get_symbol_by_url(position["instrument"])
+                if cur_symbol == self.symbol:
+                    self.instrument_id = instrument_id
+            if instrument_id == self.instrument_id:
+                return float(position["average_buy_price"])
         return 0
 
     @staticmethod

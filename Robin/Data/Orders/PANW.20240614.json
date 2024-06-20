@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "ed4a037d-d9e1-4e64-8fae-42e7310cde9f",
+        "stock": "PANW",
+        "time": "2024-06-14T12:25:41.604081-04:00",
+        "price": 316.5,
+        "share": 0.9479,
+        "remain_portion": 173
+    },
+    {
+        "uuid": "47cfaad9-396d-48e6-8374-be41049d1785",
+        "stock": "PANW",
+        "time": "2024-06-14T12:40:59.063236-04:00",
+        "price": 316.36,
+        "share": 0.9483000000000001,
+        "remain_portion": 172
+    }
+]

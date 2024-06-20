@@ -39,19 +39,20 @@ def intraday_collecting():
 					)
 					# Plotting the lines
 					plt.figure(figsize=(12, 6))
+					# plt.plot(df["begins_at"], df['close_price'], label='Close Price')
 					plt.plot(range(len(df)), df['close_price'], label='Close Price')
 
 					start_idx = 0
 					end_idx = 0
 					for i in range(len(df['begins_at'])):
 						if df['begins_at'][i] \
-							>= datetime(2024, 6, 10, 6, 30, 0, tzinfo=pytz.timezone('US/Eastern')) and start_idx == 0:
+							>= datetime(2024, 6, 13, 7, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and start_idx == 0:
 							start_idx = i
 						elif df['begins_at'][i] \
-							>= datetime(2024, 6, 10, 16, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and end_idx == 0:
+							>= datetime(2024, 6, 13, 20, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and end_idx == 0:
 							end_idx = i
 					plt.axvspan(start_idx, start_idx + 1, color='black', alpha=0.3)
-					plt.axvspan(end_idx, end_idx + 1, color='black', alpha=0.3)
+					# plt.axvspan(end_idx, end_idx + 1, color='black', alpha=0.3)
 
 					# Golden Pit indicator
 					golden_pit = list((df['term_line_8'] < 15) & (df['term_line_21'] < 15) & (df['term_line_55'] < 15))
@@ -71,17 +72,17 @@ def intraday_collecting():
 						[signal[1] for signal in resistance_signals],
 						color='red',
 						label='Resistance Signal',
-						marker='o')
+						marker='X')
 
 					# Define overbought and oversold levels
-					over_bought = list(df['rsi'] > 70)
-					over_sold = list(df['rsi'] < 30)
+					over_bought = list(df['rsi'] > 80)
+					over_sold = list(df['rsi'] < 20)
 
-					# plt.axvspan(0, 0, color='red', alpha=0.3, label='over_bought')
+					plt.axvspan(0, 0, color='purple', alpha=0.3, label='over_bought')
 					plt.axvspan(0, 0, color='green', alpha=0.3, label='over_sold')
 					for i in range(len(df)):
-					# 	if over_bought[i]:
-					# 		plt.axvspan(i, i + 1, color='red', alpha=0.3)
+						if over_bought[i]:
+							plt.axvspan(i, i + 1, color='purple', alpha=0.3)
 						if over_sold[i]:
 							plt.axvspan(i, i + 1, color='green', alpha=0.3)
 
@@ -108,12 +109,12 @@ def intraday_collecting():
 
 					# Perform calculations
 					var1 = ref((low_prices + open_prices + close_prices + high_prices) / 4, 1)
-					with np.errstate(divide='ignore'):
+					with np.errstate(divide='ignore', invalid='ignore'):
 						var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10)
 					var3 = ema(var2, 10)
 					var4 = llv(low_prices, 33)
 					var5 = ema(np.where(low_prices <= var4, var3, 0), 3)
-					with np.errstate(divide='ignore'):
+					with np.errstate(divide='ignore', invalid='ignore'):
 						var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
 					var31 = ema(var21, 10)
 					var41 = hhv(high_prices, 33)
@@ -122,15 +123,36 @@ def intraday_collecting():
 					plt.axvspan(0, 0, color='grey', alpha=0.3, label='main_force_entry')
 					plt.axvspan(0, 0, color='pink', alpha=0.3, label='main_force_pulling_up')
 
-					# main_force_entry = list(var5 > ref(var5, 1))
-					# for i in range(len(main_force_entry)):
-					# 	if main_force_entry[i]:
-					# 		plt.axvspan(i, i + 1, color='grey', alpha=0.3)
+					main_force_entry = list(var5 > ref(var5, 1))
+					for i in range(len(main_force_entry)):
+						if main_force_entry[i]:
+							plt.axvspan(i, i + 1, color='grey', alpha=0.3)
 
 					main_force_pulling_up = list(var51 < ref(var51, 1))
 					for i in range(len(main_force_pulling_up)):
 						if main_force_pulling_up[i]:
 							plt.axvspan(i, i + 1, color='pink', alpha=0.3)
+
+					def cross(series1, series2):
+						return (series1 > series2) & (np.roll(series1, 1) <= np.roll(series2, 1))
+
+					AL = (close_prices + low_prices + high_prices) / 3
+					AO = sma(AL, 5) - sma(AL, 13)
+					BBD = (AO - sma(AO, 3)) * 100
+					BBD_support = sma(BBD, 5)
+
+					# Crossovers
+					RSV1 = BBD
+					RSV2 = BBD_support
+
+					golden_cross = np.where(cross(RSV1, RSV2), RSV2, np.nan)
+
+					plt.scatter(
+						np.where(~np.isnan(golden_cross)), close_prices[~np.isnan(golden_cross)],
+						color='cyan',
+						label='Golden Cross',
+						marker='^'
+					)
 
 					plt.legend()
 					plt.title(f'Trading Indicators {stock}')

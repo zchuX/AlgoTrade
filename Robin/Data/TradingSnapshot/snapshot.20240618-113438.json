@@ -1,0 +1,215 @@
+{
+    "time": "2024-06-18T11:34:28.314549-04:00",
+    "daily_start_net_value": 82425.3281,
+    "current_net_value": 82423.2614,
+    "daily_pnl": -2.0666999999957625,
+    "daily_pnl_percentage": -0.0,
+    "remain_portion": 104,
+    "positions": {
+        "TSLA": 3.28,
+        "NVDA": 0,
+        "META": 2.4,
+        "MSFT": 0,
+        "IBM": 19.66,
+        "PLTR": 0,
+        "BA": 0,
+        "SNOW": 34.61,
+        "GOOGL": 3.42,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": 13.0,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 0,
+        "AMD": 7.76,
+        "ARM": 0,
+        "BABA": 23.81,
+        "CELH": 0,
+        "QCOM": 0,
+        "AAPL": 2.8,
+        "DELL": 0,
+        "SHOP": 27.81,
+        "CEG": 0,
+        "MU": 0,
+        "HIMS": 0
+    },
+    "cash_position": 62691.47,
+    "active_orders": {
+        "TSLA": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "TSLA",
+                "time": "2024-06-18T11:34:22.836241-04:00",
+                "price": 182.625,
+                "share": 3.28,
+                "remain_portion": -1
+            }
+        ],
+        "NVDA": [],
+        "META": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "META",
+                "time": "2024-06-18T11:34:22.836038-04:00",
+                "price": 500.0584,
+                "share": 2.4,
+                "remain_portion": -1
+            }
+        ],
+        "MSFT": [],
+        "IBM": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "IBM",
+                "time": "2024-06-18T11:34:22.836295-04:00",
+                "price": 169.0025,
+                "share": 19.66,
+                "remain_portion": -1
+            }
+        ],
+        "PLTR": [],
+        "BA": [],
+        "SNOW": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "SNOW",
+                "time": "2024-06-18T11:34:22.836374-04:00",
+                "price": 130.1077,
+                "share": 34.61,
+                "remain_portion": -1
+            }
+        ],
+        "GOOGL": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "GOOGL",
+                "time": "2024-06-18T11:34:22.836268-04:00",
+                "price": 175.6813,
+                "share": 3.42,
+                "remain_portion": -1
+            }
+        ],
+        "COIN": [],
+        "SMCI": [],
+        "HOOD": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "HOOD",
+                "time": "2024-06-18T11:34:22.836321-04:00",
+                "price": 22.18,
+                "share": 13.0,
+                "remain_portion": -1
+            }
+        ],
+        "CRWD": [],
+        "LULU": [],
+        "PANW": [],
+        "C": [],
+        "AMD": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "AMD",
+                "time": "2024-06-18T11:34:22.836159-04:00",
+                "price": 154.7642,
+                "share": 7.76,
+                "remain_portion": -1
+            }
+        ],
+        "ARM": [],
+        "BABA": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "BABA",
+                "time": "2024-06-18T11:34:22.836349-04:00",
+                "price": 75.564,
+                "share": 23.81,
+                "remain_portion": -1
+            }
+        ],
+        "CELH": [],
+        "QCOM": [],
+        "AAPL": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "AAPL",
+                "time": "2024-06-18T11:34:22.836204-04:00",
+                "price": 214.5393,
+                "share": 2.8,
+                "remain_portion": -1
+            }
+        ],
+        "DELL": [],
+        "SHOP": [
+            {
+                "uuid": "00000000-0000-0000-0000-0000000000",
+                "stock": "SHOP",
+                "time": "2024-06-18T11:34:22.836401-04:00",
+                "price": 64.7188,
+                "share": 27.81,
+                "remain_portion": -1
+            }
+        ],
+        "CEG": [],
+        "MU": [],
+        "HIMS": []
+    },
+    "active_pnl": {
+        "TSLA": 1.8,
+        "NVDA": 0,
+        "META": 1.23,
+        "MSFT": 0,
+        "IBM": -3.39,
+        "PLTR": 0,
+        "BA": 0,
+        "SNOW": -76.41,
+        "GOOGL": 0.44,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": -3.12,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 0,
+        "AMD": -5.85,
+        "ARM": 0,
+        "BABA": -29.62,
+        "CELH": 0,
+        "QCOM": 0,
+        "AAPL": -1.4,
+        "DELL": 0,
+        "SHOP": -14.43,
+        "CEG": 0,
+        "MU": 0,
+        "HIMS": 0
+    },
+    "active_pnl_percentage": {
+        "TSLA": 0.3,
+        "NVDA": 0,
+        "META": 0.1,
+        "MSFT": 0,
+        "IBM": -0.1,
+        "PLTR": 0,
+        "BA": 0,
+        "SNOW": -1.69,
+        "GOOGL": 0.08,
+        "COIN": 0,
+        "SMCI": 0,
+        "HOOD": -1.15,
+        "CRWD": 0,
+        "LULU": 0,
+        "PANW": 0,
+        "C": 0,
+        "AMD": -0.5,
+        "ARM": 0,
+        "BABA": -1.65,
+        "CELH": 0,
+        "QCOM": 0,
+        "AAPL": -0.23,
+        "DELL": 0,
+        "SHOP": -0.72,
+        "CEG": 0,
+        "MU": 0,
+        "HIMS": 0
+    }
+}

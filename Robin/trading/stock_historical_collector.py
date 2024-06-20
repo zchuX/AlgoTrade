@@ -37,7 +37,7 @@ class StockHistoricalCollector(Thread):
 		log_info(f"[StockHistoricalCollector] Collecting stock historical information for: {', '.join(symbols)}.")
 		self._symbols = symbols
 		self._interval = '5minute'
-		self._period = 'week'
+		self._period = 'day'
 		self._sleep_interval = 60
 		self._stock_info: dict[str, pd.DataFrame] = dict()
 		self._collect_stock_info(self._period)
@@ -52,7 +52,8 @@ class StockHistoricalCollector(Thread):
 		historical_info = robin_stocks.get_stock_historicals(
 			self._symbols,
 			interval=self._interval,
-			span=span
+			span=span,
+			bounds="extended"
 		)
 
 		stock_info_dict = defaultdict(list)

@@ -106,7 +106,7 @@ def intraday_collecting():
 	login()
 	trading_agent = prepare_trading_agent(stocks)
 
-	while is_pre_hour():
+	while preparing_trade():
 		if TEST_MODE:
 			log_info("TEST MODE, skip loop...")
 			break
@@ -125,7 +125,7 @@ def intraday_collecting():
 
 		last_snapshot_time = datetime.now()
 		persist_trading_snapshot(trading_agent=trading_agent)
-		while is_trading_hour() or is_after_hour():
+		while is_pre_hour() or is_trading_hour() or is_after_hour():
 			is_extended_hour = is_after_hour() or is_pre_hour()
 			log_info("Running loop....")
 			for stock in stocks:
