@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 TEST_MODE = True
-TEST_STOCKS = []
+TEST_STOCKS = ["NVDA"]
 
 
 def intraday_collecting():
@@ -44,12 +44,13 @@ def intraday_collecting():
 
 					start_idx = 0
 					end_idx = 0
+
 					for i in range(len(df['begins_at'])):
 						if df['begins_at'][i] \
-							>= datetime(2024, 6, 13, 7, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and start_idx == 0:
+							>= datetime(2024, 6, 24, 7, 30, 0, tzinfo=pytz.timezone('US/Eastern')) and start_idx == 0:
 							start_idx = i
 						elif df['begins_at'][i] \
-							>= datetime(2024, 6, 13, 20, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and end_idx == 0:
+							>= datetime(2024, 6, 24, 20, 00, 0, tzinfo=pytz.timezone('US/Eastern')) and end_idx == 0:
 							end_idx = i
 					plt.axvspan(start_idx, start_idx + 1, color='black', alpha=0.3)
 					# plt.axvspan(end_idx, end_idx + 1, color='black', alpha=0.3)
@@ -95,6 +96,15 @@ def intraday_collecting():
 					def sma(values: np.array, window):
 						return np.array(pd.Series(values).rolling(window).mean())
 
+					def wsma(values: np.array, window, weight):
+						value = np.full_like(values, np.nan)
+						for i in range(len(values)):
+							if i == 0:
+								value[i] = np.mean(values[:window])
+							else:
+								value[i] = (values[i] * weight + value[i - 1] * (window - weight)) / window
+						return value
+
 					def ema(values, window):
 						return np.array(pd.Series(values).ewm(span=window, adjust=False).mean())
 
@@ -110,12 +120,14 @@ def intraday_collecting():
 					# Perform calculations
 					var1 = ref((low_prices + open_prices + close_prices + high_prices) / 4, 1)
 					with np.errstate(divide='ignore', invalid='ignore'):
-						var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10)
+						# var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10)
+						var2 = wsma(np.abs(low_prices - var1), 13, 1) / wsma(np.maximum(low_prices - var1, 0), 10, 1)
 					var3 = ema(var2, 10)
 					var4 = llv(low_prices, 33)
 					var5 = ema(np.where(low_prices <= var4, var3, 0), 3)
 					with np.errstate(divide='ignore', invalid='ignore'):
-						var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
+						# var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
+						var21 = wsma(np.abs(high_prices - var1), 13, 1) / wsma(np.minimum(high_prices - var1, 0), 10, 1)
 					var31 = ema(var21, 10)
 					var41 = hhv(high_prices, 33)
 					var51 = ema(np.where(high_prices >= var41, var31, 0), 3)

@@ -4,6 +4,7 @@ from datetime import date, datetime
 from typing import Optional
 
 import pytz
+import pandas_market_calendars as m_cal
 import robin_stocks.robinhood.authentication as auth
 
 PACKAGE_ROOT = "/Users/meow/Desktop/AlgoTrade/Robin"
@@ -95,3 +96,10 @@ def json_serial(obj):
 	if isinstance(obj, (datetime, date)):
 		return obj.isoformat()
 	raise TypeError("Type %s not serializable" % type(obj))
+
+
+def is_trading_day():
+	yyyymmdd_date = get_yyyymmdd_date()
+	result = m_cal.get_calendar("NYSE").schedule(start_date=yyyymmdd_date, end_date=yyyymmdd_date)
+	return not result.empty
+

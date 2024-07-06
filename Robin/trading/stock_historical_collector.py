@@ -1,3 +1,4 @@
+import datetime
 import time
 import uuid
 import pandas as pd
@@ -49,6 +50,13 @@ class StockHistoricalCollector(Thread):
 	"""
 
 	def _collect_stock_info(self, span: str) -> dict[str, pd.DataFrame]:
+		additional_historical_info = robin_stocks.get_stock_historicals(
+			self._symbols,
+			interval=self._interval,
+			span="week",
+			bounds="regular"
+		)
+
 		historical_info = robin_stocks.get_stock_historicals(
 			self._symbols,
 			interval=self._interval,
@@ -57,11 +65,25 @@ class StockHistoricalCollector(Thread):
 		)
 
 		stock_info_dict = defaultdict(list)
-
 		for info in historical_info:
 			stock_info_dict[info['symbol']].append(info)
 
 		stock_info_dataframes = {symbol: pd.DataFrame(stock_info_dict[symbol]) for symbol in stock_info_dict}
+
+		stock_info_dict = defaultdict(list)
+		for info in additional_historical_info:
+			stock_info_dict[info['symbol']].append(info)
+
+		additional_historical_info_df = {symbol: pd.DataFrame(stock_info_dict[symbol]) for symbol in stock_info_dict}
+
+		for symbol in stock_info_dataframes:
+			latest_df = stock_info_dataframes[symbol]
+			latest_df['begins_at'] = pd.to_datetime(latest_df['begins_at'])
+			df = additional_historical_info_df[symbol]
+			df['begins_at'] = pd.to_datetime(df['begins_at'])
+			df_2 = df.loc[df.begins_at < latest_df.begins_at[0]]
+			df_3 = df_2.loc[df_2.begins_at > (latest_df.begins_at[0] - datetime.timedelta(days=3))]
+			stock_info_dataframes[symbol] = pd.concat([df_3, latest_df], ignore_index=True)
 
 		for symbol in stock_info_dataframes:
 			updated_df = stock_info_dataframes[symbol]
@@ -80,7 +102,7 @@ class StockHistoricalCollector(Thread):
 						f"[StockHistoricalCollector] "
 						f"Appending updated historical info for stock {symbol}: {updated_df}..."
 					)
-					self._stock_info[symbol] = pd.concat([self._stock_info[symbol], updated_df])
+					self._stock_info[symbol] = pd.concat([self._stock_info[symbol], updated_df], ignore_index=True)
 
 		return stock_info_dataframes
 

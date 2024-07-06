@@ -9,7 +9,7 @@ from util.util import get_datetime, log_info
 
 TIMEOUT = 25
 
-DEFAULT_PORTION_SIZE = 600
+DEFAULT_PORTION_SIZE = 1000
 
 
 @dataclass
@@ -97,10 +97,14 @@ class TradingAgent(object):
 		self._start_trade_snapshot = trade_snapshot
 
 	def clean_all_position(self, symbol, uuid: str, extended_hour: bool = False):
-		if extended_hour:
-			order: OrderDetails = self._executor[symbol].limit_sell_stock(self._executor[symbol].get_stock_positions())
+		position: float = self._executor[symbol].get_stock_positions()
+		if extended_hour and position >= 1:
+			order: OrderDetails = self._executor[symbol].limit_sell_stock(position)
+		elif not extended_hour and position > 0:
+			order: OrderDetails = self._executor[symbol].sell_stock(position)
 		else:
-			order: OrderDetails = self._executor[symbol].sell_stock(self._executor[symbol].get_stock_positions())
+			log_info(f"Skip cleaning all position for {symbol}, extended_hour: {extended_hour}, position: {position}.")
+			return None
 		self._cur_position[symbol] = self._executor[symbol].get_stock_positions()
 		self._cash_position = TradeExecutor.get_cash_position()
 		self._remain_portion = int(self._cash_position) // DEFAULT_PORTION_SIZE
@@ -110,8 +114,8 @@ class TradingAgent(object):
 						uuid="00000000-0000-0000-0000-0000000000",
 						stock=symbol,
 						time=get_datetime(),
-						price=self._cur_position[symbol],
-						share=self._executor[symbol].get_avg_buy_price(),
+						price=self._executor[symbol].get_avg_buy_price(),
+						share=self._cur_position[symbol],
 						remain_portion=-1,
 					))
 		sell_order = OrderMetadata(

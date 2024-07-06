@@ -55,6 +55,8 @@ def persist_trading_snapshot(
 
 
 def persist_order_details(order: OrderMetadata):
+	if order is None:
+		return
 	output_file = f"{PACKAGE_ROOT}/Data/Orders/{order.stock}.{get_yyyymmdd_date()}.json"
 	orders = []
 	if os.path.exists(output_file):
@@ -167,12 +169,13 @@ def intraday_collecting():
 def main():
 	set_log_level()
 	while True:
-		log_info("Loop Start...")
-		while is_early_morning() or is_late_night():
+		log_info("Loop start")
+		while is_early_morning() or is_late_night() or not is_trading_day():
 			if TEST_MODE:
 				log_info("TEST MODE, skip loop...")
 				break
-			log_info("Not trading hour, sleep 30 minutes....")
+			log_info(f"Not trading hour: is_early_morning: {is_early_morning()}, is_late_night: {is_late_night()}, "
+					 f"is_trading_day: {is_trading_day()}, sleep 30 minutes....")
 			sleep(1800)
 		intraday_collecting()
 		if TEST_MODE:

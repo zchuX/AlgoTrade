@@ -40,7 +40,7 @@ class TradeExecutor(object):
     def limit_buy_stock(self, amount: float) -> OrderDetails:
         market_price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
         price = market_price + min(0.05, market_price * 0.001)
-        quantity = int(amount / price)
+        quantity = max(1, int(amount / price))
         log_info(f"limit buy stock: {self.symbol} with market price: {market_price} "
                  f"with limit price: {price}, quantity: {quantity}")
         buy_result: dict = robin.orders.order(
@@ -55,9 +55,13 @@ class TradeExecutor(object):
         if "id" in buy_result:
             order_id = buy_result["id"]
 
+        instrument_id = "unknown_id"
+        if "instrument_id" in buy_result:
+            instrument_id = buy_result["instrument_id"]
+
         order_detail = OrderDetails(order_id=order_id,
                                     symbol=self.symbol,
-                                    instrument_id=buy_result["instrument_id"],
+                                    instrument_id=instrument_id,
                                     price=price,
                                     share=quantity)
         log_info(f"limit_buy_stock: {order_detail}")
@@ -89,18 +93,23 @@ class TradeExecutor(object):
             robin.orders.cancel_stock_order(sell_result["id"])
 
         order_id = "unknown_id"
+        instrument_id = "unknown_instrument_id"
         if "id" in sell_result:
             order_id = sell_result["id"]
 
+        if "instrument_id" in sell_result:
+            instrument_id = sell_result["instrument_id"]
         order_detail = OrderDetails(order_id=order_id,
                                     symbol=self.symbol,
-                                    instrument_id=sell_result["instrument_id"],
+                                    instrument_id=instrument_id,
                                     price=price,
                                     share=share)
         log_info(f"limit_sell_stock: {order_detail}")
         return order_detail
 
     def sell_stock(self, shares: float) -> OrderDetails:
+        if shares == 0:
+            raise Exception("Attempting to sell 0 share of stocks...")
         current_cash = TradeExecutor.get_total_cash_position()
         price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
         sell_result: dict = robin.orders.order_sell_fractional_by_quantity(self.symbol, shares)

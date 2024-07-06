@@ -57,6 +57,15 @@ class AlphaStrategy(BaseStrategy):
 		def sma(values: np.array, window):
 			return np.array(pd.Series(values).rolling(window).mean())
 
+		def wsma(values: np.array, window, weight):
+			wsma = np.full_like(values, np.nan)
+			for i in range(len(values)):
+				if i == 0:
+					wsma[i] = np.mean(values[:window])
+				else:
+					wsma[i] = (values[i] * weight + wsma[i-1] * (window - weight)) / window
+			return wsma
+
 		def ema(values, window):
 			return np.array(pd.Series(values).ewm(span=window, adjust=False).mean())
 
@@ -72,12 +81,14 @@ class AlphaStrategy(BaseStrategy):
 		# Perform calculations
 		var1 = ref((low_prices + open_prices + close_prices + high_prices) / 4, 1)
 		with np.errstate(divide='ignore', invalid='ignore'):
-			var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10)
+			# var2 = sma(np.abs(low_prices - var1), 13) / sma(np.maximum(low_prices - var1, 0), 10
+			var2 = wsma(np.abs(low_prices - var1), 13, 1) / wsma(np.maximum(low_prices - var1, 0), 10, 1)
 		var3 = ema(var2, 10)
 		var4 = llv(low_prices, 33)
 		var5 = ema(np.where(low_prices <= var4, var3, 0), 3)
 		with np.errstate(divide='ignore', invalid='ignore'):
-			var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
+			# var21 = sma(np.abs(high_prices - var1), 13) / sma(np.minimum(high_prices - var1, 0), 10)
+			var21 = wsma(np.abs(high_prices - var1), 13, 1) / wsma(np.minimum(high_prices - var1, 0), 10, 1)
 		var31 = ema(var21, 10)
 		var41 = hhv(high_prices, 33)
 		var51 = ema(np.where(high_prices >= var41, var31, 0), 3)
@@ -164,7 +175,7 @@ class AlphaStrategy(BaseStrategy):
 					i += 1
 			sell_price_valid = list(df['upper_band'])[-1] >= max_buy_price
 			take_loss = list(df['close_price'])[-1] <= 0.95 * max(list(df['high_price'])[list(df['uuid']).index(uuid):])
-			if ((has_resistance_signal or over_buy) and sell_price_valid) or take_loss:
+			if has_resistance_signal and sell_price_valid:
 				log_info(
 					f"Selling stock {symbol} with --- "
 					f"over_buy: {over_buy}, "
