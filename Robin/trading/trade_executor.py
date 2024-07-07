@@ -113,7 +113,9 @@ class TradeExecutor(object):
         current_cash = TradeExecutor.get_total_cash_position()
         price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
         sell_result: dict = robin.orders.order_sell_fractional_by_quantity(self.symbol, shares)
-        while TradeExecutor.get_total_cash_position() - current_cash <= price * shares * 0.8:
+        time_out = 0
+        while TradeExecutor.get_total_cash_position() - current_cash <= price * shares * 0.8 and time_out < TIME_OUT:
+            time_out += 1
             sleep(0.2)
         price = (TradeExecutor.get_total_cash_position() - current_cash) / shares
         order_detail = OrderDetails(order_id=sell_result["id"],
