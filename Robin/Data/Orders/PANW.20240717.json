@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "21a6077f-e5b1-4784-aa76-248ccba529cc",
+        "stock": "PANW",
+        "time": "2024-07-17T07:36:03.270848-04:00",
+        "price": 333.59999999999997,
+        "share": 0.0,
+        "remain_portion": 31
+    },
+    {
+        "uuid": "3a8e5638-3009-4872-8d3b-48649935f25f",
+        "stock": "PANW",
+        "time": "2024-07-17T07:56:05.039697-04:00",
+        "price": 333.7,
+        "share": 2.0,
+        "remain_portion": 23
+    },
+    {
+        "uuid": "542fa123-7a33-40b2-bb47-fc6df3dda5fe",
+        "stock": "PANW",
+        "time": "2024-07-17T08:11:19.615474-04:00",
+        "price": 333.05,
+        "share": 0.0,
+        "remain_portion": 16
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "bb932c61-0e00-485b-8425-5a9fd0ab193f",
+        "stock": "BA",
+        "time": "2024-07-12T08:35:53.345612-04:00",
+        "price": 184.04999999999998,
+        "share": 0.0,
+        "remain_portion": 32
+    },
+    {
+        "uuid": "fefb712a-dd17-4137-a65b-74c3c666149a",
+        "stock": "BA",
+        "time": "2024-07-12T18:56:07.487785-04:00",
+        "price": 182.25,
+        "share": 0.0,
+        "remain_portion": 20
+    },
+    {
+        "uuid": "38f12b1b-79cc-4dca-937c-c5a1154d9080",
+        "stock": "BA",
+        "time": "2024-07-12T19:11:14.505646-04:00",
+        "price": 182.1911,
+        "share": 5.0,
+        "remain_portion": 19
+    },
+    {
+        "uuid": "6a8b333f-61bc-4395-9a1d-839f83feebe3",
+        "stock": "BA",
+        "time": "2024-07-12T19:26:22.098348-04:00",
+        "price": 182.26000000000002,
+        "share": 5.0,
+        "remain_portion": 18
+    }
+]

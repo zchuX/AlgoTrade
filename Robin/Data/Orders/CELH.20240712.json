@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "3ac15990-8034-4c4c-80f7-2beaaf695d16",
+        "stock": "CELH",
+        "time": "2024-07-12T15:55:40.547893-04:00",
+        "price": 58.84,
+        "share": 0.0,
+        "remain_portion": 25
+    },
+    {
+        "uuid": "3ac15990-8034-4c4c-80f7-2beaaf695d16",
+        "stock": "CELH",
+        "time": "2024-07-12T15:56:44.950156-04:00",
+        "price": 59.02,
+        "share": 16.94,
+        "remain_portion": 24
+    }
+]

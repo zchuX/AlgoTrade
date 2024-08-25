@@ -30,23 +30,23 @@ class TradeSnapshot:
 	daily_pnl: float
 	daily_pnl_percentage: float
 	remain_portion: int
-	positions: dict[str, float]
+	positions: typing.Dict[str, float]
 	cash_position: float
-	active_orders: dict[str, list[OrderMetadata]]
-	active_pnl: dict[str, float]
-	active_pnl_percentage: dict[str, float]
+	active_orders: typing.Dict[str, typing.List[OrderMetadata]]
+	active_pnl: typing.Dict[str, float]
+	active_pnl_percentage: typing.Dict[str, float]
 
 
 class TradingAgent(object):
 	def __init__(
 		self,
-		symbols: list[str],
+		symbols: typing.List[str],
 		trade_snapshot: typing.Optional[TradeSnapshot],
 		test_mode: bool = False
 	):
-		self._symbols: list[str] = symbols
-		self._executor: dict[str, TradeExecutor] = {symbol: TradeExecutor(symbol) for symbol in symbols}
-		self._cur_position: dict[str, float] = {
+		self._symbols: typing.List[str] = symbols
+		self._executor: typing.Dict[str, TradeExecutor] = {symbol: TradeExecutor(symbol) for symbol in symbols}
+		self._cur_position: typing.Dict[str, float] = {
 			symbol: self._executor[symbol].get_stock_positions() for symbol in symbols
 		}
 		self._cash_position: float = TradeExecutor.get_cash_position()
@@ -89,15 +89,17 @@ class TradingAgent(object):
 					self._cur_position[symbol] += active_order.share
 
 		self._portion_size: float = DEFAULT_PORTION_SIZE
-		self._active_orders: dict[str, list[OrderMetadata]] = trade_snapshot.active_orders
+		self._active_orders: typing.Dict[str, typing.List[OrderMetadata]] = trade_snapshot.active_orders
 		for symbol in symbols:
 			if symbol not in self._active_orders:
 				self._active_orders[symbol] = []
 
 		self._start_trade_snapshot = trade_snapshot
 
-	def clean_all_position(self, symbol, uuid: str, extended_hour: bool = False):
+	def clean_positions(self, symbol, uuid: str, extended_hour: bool = False):
 		position: float = self._executor[symbol].get_stock_positions()
+		position = min(position, max(
+			position / 2, 2 * DEFAULT_PORTION_SIZE / StockInfoCollector.get_current_price_by_symbol(symbol=symbol)))
 		if extended_hour and position >= 1:
 			order: OrderDetails = self._executor[symbol].limit_sell_stock(position)
 		elif not extended_hour and position > 0:
@@ -111,13 +113,13 @@ class TradingAgent(object):
 		self._active_orders[symbol] = []
 		if self._cur_position[symbol] > 0:
 			self._active_orders[symbol].append(OrderMetadata(
-						uuid="00000000-0000-0000-0000-0000000000",
-						stock=symbol,
-						time=get_datetime(),
-						price=self._executor[symbol].get_avg_buy_price(),
-						share=self._cur_position[symbol],
-						remain_portion=-1,
-					))
+				uuid=uuid,
+				stock=symbol,
+				time=get_datetime(),
+				price=self._executor[symbol].get_avg_buy_price(),
+				share=self._cur_position[symbol],
+				remain_portion=-1,
+			))
 		sell_order = OrderMetadata(
 			uuid=uuid,
 			stock=symbol,
@@ -173,7 +175,7 @@ class TradingAgent(object):
 			share=self._executor[symbol].get_stock_positions() - cur_position,
 			remain_portion=self._remain_portion
 		)
-		if self._cur_position[symbol] <= cur_position and extended_hour == False:
+		if self._cur_position[symbol] <= cur_position and not extended_hour:
 			log_info(f"Order with {symbol} did not go through: {order}!!")
 		else:
 			self._active_orders[symbol].append(order_metadata)
@@ -247,7 +249,7 @@ class TradingAgent(object):
 			active_pnl_percentage={symbol: round(self._get_pnl_percentage(symbol), 2) for symbol in self._symbols}
 		)
 
-	def test_snapshot(self, prices: dict[str, float], time: datetime) -> TradeSnapshot:
+	def test_snapshot(self, prices: typing.Dict[str, float], time: datetime) -> TradeSnapshot:
 		start_net_value = self._start_trade_snapshot.current_net_value
 		if time - timedelta(hours=6, minutes=30) < self._start_trade_snapshot.time:
 			start_net_value = self._start_trade_snapshot.daily_start_net_value

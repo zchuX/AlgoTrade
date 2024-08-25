@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "b8f2e3c8-af22-4577-9f77-d840e6226796",
+        "stock": "NVDA",
+        "time": "2024-07-31T15:01:10.830039-04:00",
+        "price": 117.57157857892896,
+        "share": -28.57,
+        "remain_portion": 0
+    },
+    {
+        "uuid": "67f7f0fb-8aca-4eca-b950-105fc95ea4ed",
+        "stock": "NVDA",
+        "time": "2024-07-31T16:21:18.884011-04:00",
+        "price": 119.19,
+        "share": 16.0,
+        "remain_portion": 0
+    },
+    {
+        "uuid": "3dce647c-0939-4721-8b5b-719146a7d66d",
+        "stock": "NVDA",
+        "time": "2024-07-31T18:31:21.957876-04:00",
+        "price": 121.01,
+        "share": 12.0,
+        "remain_portion": 0
+    }
+]

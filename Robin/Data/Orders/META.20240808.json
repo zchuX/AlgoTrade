@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "e0cf7a3b-5a94-429f-b2fc-bb8141eac2c8",
+        "stock": "META",
+        "time": "2024-08-08T08:26:52.985236-04:00",
+        "price": 487.17040000000003,
+        "share": 2.0,
+        "remain_portion": 5
+    },
+    {
+        "uuid": "dce8e6c4-d504-43f9-b6ff-de3a832c937d",
+        "stock": "META",
+        "time": "2024-08-08T08:45:30.045056-04:00",
+        "price": 496.46,
+        "share": 2.0,
+        "remain_portion": 4
+    }
+]

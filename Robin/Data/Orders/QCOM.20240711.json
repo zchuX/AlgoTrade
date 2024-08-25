@@ -1,0 +1,50 @@
+[
+    {
+        "uuid": "61b6d4c2-4ed6-4032-9d9f-3747855d67cf",
+        "stock": "QCOM",
+        "time": "2024-07-11T10:51:08.473912-04:00",
+        "price": 204.45,
+        "share": 4.89,
+        "remain_portion": 38
+    },
+    {
+        "uuid": "26c70c71-e8ca-48ce-8d0b-aaeb12c67af6",
+        "stock": "QCOM",
+        "time": "2024-07-11T11:46:21.704419-04:00",
+        "price": 202.33,
+        "share": 4.94,
+        "remain_portion": 27
+    },
+    {
+        "uuid": "277e8ff1-b4f1-46f5-8f11-d8a023358cfb",
+        "stock": "QCOM",
+        "time": "2024-07-11T12:00:49.761707-04:00",
+        "price": 201.2,
+        "share": 4.970000000000001,
+        "remain_portion": 20
+    },
+    {
+        "uuid": "05b44f3d-0dea-4143-b5da-f4ab6d66f440",
+        "stock": "QCOM",
+        "time": "2024-07-11T13:16:37.396923-04:00",
+        "price": 201.09,
+        "share": 0.0,
+        "remain_portion": 19
+    },
+    {
+        "uuid": "05b44f3d-0dea-4143-b5da-f4ab6d66f440",
+        "stock": "QCOM",
+        "time": "2024-07-11T13:17:41.459813-04:00",
+        "price": 201.18,
+        "share": 4.969999999999999,
+        "remain_portion": 18
+    },
+    {
+        "uuid": "0e856e4c-c374-4df3-9af6-8256bb8ba1ba",
+        "stock": "QCOM",
+        "time": "2024-07-11T14:01:15.650466-04:00",
+        "price": 200.59,
+        "share": 4.990000000000002,
+        "remain_portion": 14
+    }
+]

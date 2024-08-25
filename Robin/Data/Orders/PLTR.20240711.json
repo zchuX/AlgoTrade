@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "342d930c-058d-45cc-90c1-a4dd339515c3",
+        "stock": "PLTR",
+        "time": "2024-07-11T11:36:44.245232-04:00",
+        "price": 27.28,
+        "share": 36.66,
+        "remain_portion": 35
+    },
+    {
+        "uuid": "16c3ed78-1dda-473f-8083-755f262277da",
+        "stock": "PLTR",
+        "time": "2024-07-11T11:50:31.262860-04:00",
+        "price": 26.98,
+        "share": 1.0,
+        "remain_portion": 25
+    },
+    {
+        "uuid": "2a0532e5-a1b6-4e8f-b02e-1f4b03d91c38",
+        "stock": "PLTR",
+        "time": "2024-07-11T15:05:57.582667-04:00",
+        "price": 27.58386206896554,
+        "share": -72.5,
+        "remain_portion": 11
+    },
+    {
+        "uuid": "10993fd1-5866-41f4-aacd-90be66d8cccf",
+        "stock": "PLTR",
+        "time": "2024-07-11T19:00:36.403971-04:00",
+        "price": 27.307280000000002,
+        "share": 36.0,
+        "remain_portion": 2
+    }
+]

@@ -45,6 +45,9 @@ class BaseStrategy(object):
 	def should_sell(self, symbol: str) -> bool:
 		stock_historical_data: pd.DataFrame = self._stock_info_collector.get_historical_info_by_symbol(symbol=symbol)
 		active_orders: list[OrderMetadata] = self._trade_agent.get_active_orders(symbol)
+		for active_order in active_orders:
+			if active_order.uuid == list(stock_historical_data['uuid'])[-1]:
+				return False
 		return len(stock_historical_data) > 0 and len(active_orders) > 0
 
 	def action(self, stock, time):

@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "36765718-880e-4f93-ae76-51aa8364969e",
+        "stock": "HIMS",
+        "time": "2024-07-09T07:40:33.775013-04:00",
+        "price": 20.530510000000003,
+        "share": 0.0,
+        "remain_portion": 46
+    },
+    {
+        "uuid": "4caac4fc-d6a1-49f8-b0a1-2f59828feb3b",
+        "stock": "HIMS",
+        "time": "2024-07-09T08:50:29.281164-04:00",
+        "price": 20.54052,
+        "share": 240.0,
+        "remain_portion": 41
+    },
+    {
+        "uuid": "a7e58286-d7b9-465f-9f9a-6cee41e19a92",
+        "stock": "HIMS",
+        "time": "2024-07-09T14:06:44.747539-04:00",
+        "price": 19.99,
+        "share": 50.02999999999997,
+        "remain_portion": 21
+    }
+]

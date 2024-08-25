@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "887f920a-cde2-4bb6-803d-7858e93db0ed",
+        "stock": "HOOD",
+        "time": "2024-07-09T09:11:01.565545-04:00",
+        "price": 22.142120000000002,
+        "share": 0.0,
+        "remain_portion": 39
+    },
+    {
+        "uuid": "9f0596df-6cc9-4f41-aa75-d11b70021a38",
+        "stock": "HOOD",
+        "time": "2024-07-09T10:10:47.436696-04:00",
+        "price": 22.48417271063515,
+        "share": -147.53,
+        "remain_portion": 36
+    },
+    {
+        "uuid": "c009d10d-0c2a-4e5d-b22c-abac9373a71c",
+        "stock": "HOOD",
+        "time": "2024-07-09T12:21:05.863551-04:00",
+        "price": 23.20420002320448,
+        "share": -86.19,
+        "remain_portion": 30
+    },
+    {
+        "uuid": "57ecbd47-5363-4820-9741-b0ff0f827b46",
+        "stock": "HOOD",
+        "time": "2024-07-09T19:05:59.575210-04:00",
+        "price": 22.65732,
+        "share": 61.0,
+        "remain_portion": 12
+    }
+]

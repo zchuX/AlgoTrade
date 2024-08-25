@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "e173b81f-4208-41ba-97c8-76ba0fdd2f5e",
+        "stock": "COIN",
+        "time": "2024-07-30T08:40:59.811602-04:00",
+        "price": 233.35000000000002,
+        "share": 0.0,
+        "remain_portion": 4
+    },
+    {
+        "uuid": "55b2c0b4-1dab-4b5e-bb6a-a6efc39fe1bb",
+        "stock": "COIN",
+        "time": "2024-07-30T10:01:07.861340-04:00",
+        "price": 233.02749999999992,
+        "share": -4.0,
+        "remain_portion": 3
+    }
+]

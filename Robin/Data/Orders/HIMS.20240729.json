@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "328d45ca-dc6f-41cf-a593-11815e2232eb",
+        "stock": "HIMS",
+        "time": "2024-07-29T09:31:29.263756-04:00",
+        "price": 22.14,
+        "share": 0,
+        "remain_portion": 10
+    },
+    {
+        "uuid": "328d45ca-dc6f-41cf-a593-11815e2232eb",
+        "stock": "HIMS",
+        "time": "2024-07-29T09:32:42.919292-04:00",
+        "price": 22.1,
+        "share": 45.23,
+        "remain_portion": 9
+    },
+    {
+        "uuid": "c17e3b09-80ab-40de-96f0-25bed2ef8898",
+        "stock": "HIMS",
+        "time": "2024-07-29T09:46:07.581203-04:00",
+        "price": 21.93,
+        "share": 0.0,
+        "remain_portion": 9
+    },
+    {
+        "uuid": "c17e3b09-80ab-40de-96f0-25bed2ef8898",
+        "stock": "HIMS",
+        "time": "2024-07-29T09:47:11.705188-04:00",
+        "price": 21.96,
+        "share": 45.54,
+        "remain_portion": 8
+    }
+]

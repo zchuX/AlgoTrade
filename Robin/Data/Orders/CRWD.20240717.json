@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "cae4ff17-0ba3-4fb1-9825-0aa5451dac6c",
+        "stock": "CRWD",
+        "time": "2024-07-17T07:31:05.044129-04:00",
+        "price": 361.7,
+        "share": 2.0,
+        "remain_portion": 33
+    },
+    {
+        "uuid": "fa6922f1-d440-418b-a708-d2542ced43e3",
+        "stock": "CRWD",
+        "time": "2024-07-17T07:46:33.362436-04:00",
+        "price": 361.7,
+        "share": 0.0,
+        "remain_portion": 26
+    },
+    {
+        "uuid": "0819a73e-58e8-476d-b9ae-7df55afa2887",
+        "stock": "CRWD",
+        "time": "2024-07-17T08:00:59.996099-04:00",
+        "price": 361.97,
+        "share": 4.0,
+        "remain_portion": 19
+    },
+    {
+        "uuid": "1f7a58d7-556e-40ae-a7fa-0ab0c6dbea1c",
+        "stock": "CRWD",
+        "time": "2024-07-17T09:06:01.335776-04:00",
+        "price": 361.05,
+        "share": 2.0,
+        "remain_portion": 10
+    }
+]

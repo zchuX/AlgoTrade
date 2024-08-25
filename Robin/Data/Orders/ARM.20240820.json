@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "a68a94f0-f940-4891-b835-49cf0cd6b57f",
+        "stock": "ARM",
+        "time": "2024-08-20T09:22:18.489117-04:00",
+        "price": 131.3514,
+        "share": 0.0,
+        "remain_portion": 12
+    },
+    {
+        "uuid": "6ca6060d-239e-4b5f-a794-69fc9b6e5abc",
+        "stock": "ARM",
+        "time": "2024-08-20T09:40:56.998776-04:00",
+        "price": 133.66142857142873,
+        "share": -7.0,
+        "remain_portion": 7
+    },
+    {
+        "uuid": "a079f19e-7886-46c0-83f6-3b8d05ad5dce",
+        "stock": "ARM",
+        "time": "2024-08-20T10:41:51.579411-04:00",
+        "price": 129.01,
+        "share": 7.75,
+        "remain_portion": 1
+    }
+]

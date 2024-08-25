@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "88e5badf-3808-435d-b1fb-f3e82c653ab8",
+        "stock": "CEG",
+        "time": "2024-07-09T14:06:42.033376-04:00",
+        "price": 216.44,
+        "share": 4.62,
+        "remain_portion": 22
+    },
+    {
+        "uuid": "8cdaeff5-3403-4575-92bf-99ad6dcb3b38",
+        "stock": "CEG",
+        "time": "2024-07-09T14:20:55.356891-04:00",
+        "price": 215.61,
+        "share": 4.64,
+        "remain_portion": 19
+    }
+]

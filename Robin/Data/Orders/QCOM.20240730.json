@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "0ddfcdd6-7b99-4995-9378-2957e0e50303",
+        "stock": "QCOM",
+        "time": "2024-07-30T09:01:31.904825-04:00",
+        "price": 178.5609,
+        "share": 0.0,
+        "remain_portion": 3
+    },
+    {
+        "uuid": "a0f9be26-b914-4cf2-a69e-990e4d2ba199",
+        "stock": "QCOM",
+        "time": "2024-07-30T10:01:10.119200-04:00",
+        "price": 177.04,
+        "share": 10.65,
+        "remain_portion": 2
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "9f732ce5-8a9c-455f-bd64-48dbc2ddcf5c",
+        "stock": "SMCI",
+        "time": "2024-07-12T07:40:34.727105-04:00",
+        "price": 882.9399999999999,
+        "share": 0.0,
+        "remain_portion": 33
+    },
+    {
+        "uuid": "e2c9f53f-8f7f-4072-84ed-444f1efc72e5",
+        "stock": "SMCI",
+        "time": "2024-07-12T09:40:34.097838-04:00",
+        "price": 884.3938053097344,
+        "share": -2.26,
+        "remain_portion": 29
+    },
+    {
+        "uuid": "9927c787-0207-4bad-862a-a2c2f190d06c",
+        "stock": "SMCI",
+        "time": "2024-07-12T10:26:32.784289-04:00",
+        "price": 916.7183908045998,
+        "share": -1.74,
+        "remain_portion": 28
+    }
+]

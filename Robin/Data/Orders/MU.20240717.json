@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "352cba64-d218-44f8-8651-ba13d136f327",
+        "stock": "MU",
+        "time": "2024-07-17T07:36:12.616560-04:00",
+        "price": 122.36,
+        "share": 8.0,
+        "remain_portion": 28
+    },
+    {
+        "uuid": "5f65028b-ee9d-4f3e-ae6a-d330663aecc9",
+        "stock": "MU",
+        "time": "2024-07-17T07:56:44.086696-04:00",
+        "price": 122.21,
+        "share": 0.0,
+        "remain_portion": 20
+    },
+    {
+        "uuid": "81d5f4a5-30cc-4f98-812e-0f60418e7fc4",
+        "stock": "MU",
+        "time": "2024-07-17T08:55:50.944259-04:00",
+        "price": 122.34989999999999,
+        "share": 16.0,
+        "remain_portion": 13
+    },
+    {
+        "uuid": "9f33f113-a6f8-44a3-a470-e9ee5b6c08ce",
+        "stock": "MU",
+        "time": "2024-07-17T12:52:40.136297-04:00",
+        "price": 120.3,
+        "share": 8.310000000000002,
+        "remain_portion": 0
+    }
+]

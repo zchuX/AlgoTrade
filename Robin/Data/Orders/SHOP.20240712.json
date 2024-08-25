@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "37e0e3bc-a51b-469a-8dc1-38b2a838c646",
+        "stock": "SHOP",
+        "time": "2024-07-12T08:51:06.711178-04:00",
+        "price": 65.39999999999999,
+        "share": 0.0,
+        "remain_portion": 30
+    },
+    {
+        "uuid": "73ea4ef4-5165-4fa6-b986-20351ed2dff3",
+        "stock": "SHOP",
+        "time": "2024-07-12T10:26:35.380310-04:00",
+        "price": 65.61799999999978,
+        "share": -15.0,
+        "remain_portion": 28
+    },
+    {
+        "uuid": "9705d84f-891e-4ed0-a1af-2118a5bec540",
+        "stock": "SHOP",
+        "time": "2024-07-12T15:16:01.307750-04:00",
+        "price": 64.67,
+        "share": 15.46,
+        "remain_portion": 27
+    },
+    {
+        "uuid": "ff898327-e537-41f4-ae2b-91ef9b5cbeab",
+        "stock": "SHOP",
+        "time": "2024-07-12T19:26:27.286096-04:00",
+        "price": 64.80030000000001,
+        "share": 15.0,
+        "remain_portion": 18
+    }
+]

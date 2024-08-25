@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "f16d0903-3216-4355-b42c-9d0ec5a5987d",
+        "stock": "TSLA",
+        "time": "2024-07-11T07:35:27.819912-04:00",
+        "price": 262.95,
+        "share": 6.0,
+        "remain_portion": 53
+    },
+    {
+        "uuid": "83d42bb4-c569-479e-85b2-1cac64e1cb25",
+        "stock": "TSLA",
+        "time": "2024-07-11T17:11:10.598723-04:00",
+        "price": 238.20000000000002,
+        "share": 4.0,
+        "remain_portion": 10
+    },
+    {
+        "uuid": "e0052796-ab8a-4ad5-b1a4-32a643c4ef51",
+        "stock": "TSLA",
+        "time": "2024-07-11T17:36:29.798578-04:00",
+        "price": 235.77,
+        "share": 4.0,
+        "remain_portion": 6
+    }
+]

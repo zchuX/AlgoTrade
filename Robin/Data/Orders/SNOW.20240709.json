@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "68b67208-97dd-4cb9-aad7-93d9a9045261",
+        "stock": "SNOW",
+        "time": "2024-07-09T08:40:18.205175-04:00",
+        "price": 141.35000000000002,
+        "share": 7.0,
+        "remain_portion": 43
+    },
+    {
+        "uuid": "c14f1d0a-16c9-4fd4-b260-e998564da29f",
+        "stock": "SNOW",
+        "time": "2024-07-09T09:36:24.472415-04:00",
+        "price": 140.65,
+        "share": 7.109999999999999,
+        "remain_portion": 37
+    },
+    {
+        "uuid": "0367d703-de0a-4f5e-9762-1ccaaec8c6a3",
+        "stock": "SNOW",
+        "time": "2024-07-09T10:26:00.118557-04:00",
+        "price": 137.88,
+        "share": 7.25,
+        "remain_portion": 33
+    },
+    {
+        "uuid": "91ea28dc-b9a5-4d6e-b643-640039273f53",
+        "stock": "SNOW",
+        "time": "2024-07-09T11:15:31.893115-04:00",
+        "price": 136.65,
+        "share": 7.32,
+        "remain_portion": 31
+    }
+]

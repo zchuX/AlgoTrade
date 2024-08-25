@@ -1,0 +1,34 @@
+[
+    {
+        "uuid": "b28e5672-d845-45e6-add4-b59bf0e40f60",
+        "stock": "DELL",
+        "time": "2024-07-16T18:55:20.922413-04:00",
+        "price": 134.05,
+        "share": 7.0,
+        "remain_portion": 21
+    },
+    {
+        "uuid": "176ba21a-a6cb-4344-b167-55342fce5779",
+        "stock": "DELL",
+        "time": "2024-07-16T19:11:24.475173-04:00",
+        "price": 134.05,
+        "share": 6.9999999999999964,
+        "remain_portion": 18
+    },
+    {
+        "uuid": "97cd597a-07df-4067-aa7b-4cf9248def09",
+        "stock": "DELL",
+        "time": "2024-07-16T19:26:31.701672-04:00",
+        "price": 134.05,
+        "share": 7.0,
+        "remain_portion": 17
+    },
+    {
+        "uuid": "3ea227e0-a2e0-41b6-928a-eeaf9311c866",
+        "stock": "DELL",
+        "time": "2024-07-16T19:47:01.870681-04:00",
+        "price": 133.94,
+        "share": 0.0,
+        "remain_portion": 16
+    }
+]

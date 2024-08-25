@@ -1,0 +1,42 @@
+[
+    {
+        "uuid": "cae11599-bf61-4433-b439-13ad548c6137",
+        "stock": "IBM",
+        "time": "2024-08-21T08:10:50.356255-04:00",
+        "price": 195.45999999999998,
+        "share": 9.0,
+        "remain_portion": 7
+    },
+    {
+        "uuid": "3c8549b3-c0bc-4799-85ab-c5c75a70defe",
+        "stock": "IBM",
+        "time": "2024-08-21T08:35:24.843294-04:00",
+        "price": 195.56,
+        "share": 0.0,
+        "remain_portion": 5
+    },
+    {
+        "uuid": "493c0f30-a055-442b-ac30-481cc30267b7",
+        "stock": "IBM",
+        "time": "2024-08-21T09:56:13.828625-04:00",
+        "price": 194.87,
+        "share": 10.13,
+        "remain_portion": 2
+    },
+    {
+        "uuid": "6ebee78f-0af2-4f87-a7dd-cfcb7226ec72",
+        "stock": "IBM",
+        "time": "2024-08-21T10:11:27.694837-04:00",
+        "price": 194.67,
+        "share": 5.140000000000001,
+        "remain_portion": 0
+    },
+    {
+        "uuid": "ed50e7d9-20c4-484c-8005-393970cfbc6e",
+        "stock": "IBM",
+        "time": "2024-08-21T16:06:58.546098-04:00",
+        "price": 197.16,
+        "share": 0.0,
+        "remain_portion": 0
+    }
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "0b6fd3e4-1416-4816-a830-fcc8cd90cf9a",
+        "stock": "AAPL",
+        "time": "2024-08-09T07:56:04.351445-04:00",
+        "price": 211.51000000000002,
+        "share": 0.0,
+        "remain_portion": 9
+    },
+    {
+        "uuid": "0039c0bd-a454-4bfe-a8e9-771f9bab1dd7",
+        "stock": "AAPL",
+        "time": "2024-08-09T10:21:13.565734-04:00",
+        "price": 214.1825,
+        "share": -4.0,
+        "remain_portion": 0
+    }
+]

@@ -100,6 +100,8 @@ class AlphaStrategy(BaseStrategy):
 
 	def action(self, symbol: str, test_datetime: Optional[datetime] = None) -> ActionMetadata:
 		should_buy = super().should_buy(symbol)
+		if symbol in ["CELH", "DELL"]:
+			should_buy = False
 		should_sell = super().should_sell(symbol)
 		action: Action = Action.HOLD
 		if not should_buy and not should_sell:
@@ -173,7 +175,7 @@ class AlphaStrategy(BaseStrategy):
 					if over_buys[-i]:
 						over_buy = True
 					i += 1
-			sell_price_valid = list(df['upper_band'])[-1] >= max_buy_price
+			sell_price_valid = list(df['upper_band'])[-1] >= max_buy_price * 1.005
 			take_loss = list(df['close_price'])[-1] <= 0.95 * max(list(df['high_price'])[list(df['uuid']).index(uuid):])
 			if has_resistance_signal and sell_price_valid:
 				log_info(

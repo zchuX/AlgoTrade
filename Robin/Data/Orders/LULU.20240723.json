@@ -1,0 +1,42 @@
+[
+    {
+        "uuid": "9edba6d8-c18f-453e-bef0-19da05e11318",
+        "stock": "LULU",
+        "time": "2024-07-23T14:56:29.066804-04:00",
+        "price": 283.85,
+        "share": 0,
+        "remain_portion": 5
+    },
+    {
+        "uuid": "9edba6d8-c18f-453e-bef0-19da05e11318",
+        "stock": "LULU",
+        "time": "2024-07-23T14:57:32.790548-04:00",
+        "price": 283.93,
+        "share": 3.52,
+        "remain_portion": 4
+    },
+    {
+        "uuid": "65e5376a-a31c-45b8-a835-cdb1d86cdd78",
+        "stock": "LULU",
+        "time": "2024-07-23T15:10:38.840172-04:00",
+        "price": 283.06,
+        "share": 6.529999999999999,
+        "remain_portion": 3
+    },
+    {
+        "uuid": "8b89e584-4847-441b-b977-7d67b0d77ee9",
+        "stock": "LULU",
+        "time": "2024-07-23T15:25:44.774150-04:00",
+        "price": 282.64,
+        "share": 7.07,
+        "remain_portion": 2
+    },
+    {
+        "uuid": "439135e2-41a3-49c5-bb18-0d62136b4bf4",
+        "stock": "LULU",
+        "time": "2024-07-23T15:41:05.877494-04:00",
+        "price": 282.36,
+        "share": 6.540000000000001,
+        "remain_portion": 0
+    }
+]

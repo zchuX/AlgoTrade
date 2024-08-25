@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "7178f2f2-52ac-451c-bfd8-a5effe4b246d",
+        "stock": "COIN",
+        "time": "2024-07-11T11:50:34.632942-04:00",
+        "price": 218.88,
+        "share": 4.57,
+        "remain_portion": 24
+    },
+    {
+        "uuid": "78ddde0b-c365-4aea-92fd-221c09d4f850",
+        "stock": "COIN",
+        "time": "2024-07-11T12:05:54.623827-04:00",
+        "price": 215.84,
+        "share": 4.629999999999999,
+        "remain_portion": 19
+    },
+    {
+        "uuid": "6ffd1b0e-ccc6-433d-88b0-ba7205d2746f",
+        "stock": "COIN",
+        "time": "2024-07-11T14:16:24.097499-04:00",
+        "price": 215.41,
+        "share": 4.640000000000001,
+        "remain_portion": 11
+    }
+]

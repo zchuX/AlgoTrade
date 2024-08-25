@@ -1,0 +1,42 @@
+[
+    {
+        "uuid": "330c569f-f6cc-4e4e-801c-d511c8986291",
+        "stock": "AAPL",
+        "time": "2024-07-11T08:26:41.596001-04:00",
+        "price": 232.0251,
+        "share": 4.0,
+        "remain_portion": 50
+    },
+    {
+        "uuid": "8c28a859-1bfb-4ebf-9e83-f4e2e1f27d29",
+        "stock": "AAPL",
+        "time": "2024-07-11T08:41:33.414206-04:00",
+        "price": 232.73,
+        "share": 4.0,
+        "remain_portion": 50
+    },
+    {
+        "uuid": "b4fdfcb7-eede-4f24-ac1d-d1ca9f91676f",
+        "stock": "AAPL",
+        "time": "2024-07-11T10:46:03.922594-04:00",
+        "price": 228.17,
+        "share": 4.38,
+        "remain_portion": 39
+    },
+    {
+        "uuid": "093460ee-c1bd-4076-8e61-5f1f36270087",
+        "stock": "AAPL",
+        "time": "2024-07-11T11:01:20.901343-04:00",
+        "price": 226.97,
+        "share": 4.409999999999999,
+        "remain_portion": 36
+    },
+    {
+        "uuid": "e8527a5e-4050-4944-a4ec-25e3db50ae59",
+        "stock": "AAPL",
+        "time": "2024-07-11T19:10:58.529668-04:00",
+        "price": 228.75,
+        "share": 7.999999999999999,
+        "remain_portion": 1
+    }
+]

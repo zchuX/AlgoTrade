@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "3351e8c3-e29f-4bc3-bd6c-4eee2d36aab1",
+        "stock": "AMD",
+        "time": "2024-07-11T11:46:16.176837-04:00",
+        "price": 178.57,
+        "share": 5.6,
+        "remain_portion": 29
+    },
+    {
+        "uuid": "68aaaa89-c7bb-4bb5-9109-b28be8884b12",
+        "stock": "AMD",
+        "time": "2024-07-11T15:31:08.885755-04:00",
+        "price": 181.3178571428567,
+        "share": -5.6,
+        "remain_portion": 11
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "db7a4d54-a756-47ba-a891-a4ffc4ed3b9c",
+        "stock": "MSFT",
+        "time": "2024-07-11T10:05:56.898772-04:00",
+        "price": 460.83,
+        "share": 2.17,
+        "remain_portion": 48
+    },
+    {
+        "uuid": "bce31f76-6faf-4b64-9ae5-984f7793eb78",
+        "stock": "MSFT",
+        "time": "2024-07-11T10:21:17.386576-04:00",
+        "price": 457.41,
+        "share": 0.0,
+        "remain_portion": 46
+    },
+    {
+        "uuid": "bce31f76-6faf-4b64-9ae5-984f7793eb78",
+        "stock": "MSFT",
+        "time": "2024-07-11T10:22:30.021094-04:00",
+        "price": 457.01,
+        "share": 4.38,
+        "remain_portion": 43
+    }
+]

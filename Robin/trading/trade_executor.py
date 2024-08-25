@@ -108,11 +108,13 @@ class TradeExecutor(object):
         return order_detail
 
     def sell_stock(self, shares: float) -> OrderDetails:
+        shares = round(shares, 2)
         if shares == 0:
             raise Exception("Attempting to sell 0 share of stocks...")
         current_cash = TradeExecutor.get_total_cash_position()
         price = StockInfoCollector.get_current_price_by_symbol(self.symbol)
         sell_result: dict = robin.orders.order_sell_fractional_by_quantity(self.symbol, shares)
+        log_info(f"sell_result: {sell_result}")
         time_out = 0
         while TradeExecutor.get_total_cash_position() - current_cash <= price * shares * 0.8 and time_out < TIME_OUT:
             time_out += 1

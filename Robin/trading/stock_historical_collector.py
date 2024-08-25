@@ -4,7 +4,7 @@ import uuid
 import pandas as pd
 import ta
 
-from typing import Optional
+from typing import Optional, List, Dict
 from dataclasses import dataclass
 from collections import defaultdict
 from threading import Thread
@@ -16,7 +16,7 @@ from util.util import log_info, log_error, login
 @dataclass
 class HjkMetadata:
 	interval: int
-	smooth_parameters: list[int]
+	smooth_parameters: List[int]
 	std_interval: int
 	std_multiplier: int
 
@@ -40,7 +40,7 @@ class StockHistoricalCollector(Thread):
 		self._interval = '5minute'
 		self._period = 'day'
 		self._sleep_interval = 60
-		self._stock_info: dict[str, pd.DataFrame] = dict()
+		self._stock_info: Dict[str, pd.DataFrame] = dict()
 		self._collect_stock_info(self._period)
 		self._running = True
 
@@ -49,7 +49,7 @@ class StockHistoricalCollector(Thread):
 	Span: 'day', 'week', 'month', '3month', 'year', or '5year'. 
 	"""
 
-	def _collect_stock_info(self, span: str) -> dict[str, pd.DataFrame]:
+	def _collect_stock_info(self, span: str) -> Dict[str, pd.DataFrame]:
 		additional_historical_info = robin_stocks.get_stock_historicals(
 			self._symbols,
 			interval=self._interval,
@@ -126,7 +126,7 @@ class StockHistoricalCollector(Thread):
 	def get_historical_info_by_symbol(
 		self,
 		symbol: str,
-		metadata_list: Optional[list[HjkMetadata]] = None,
+		metadata_list: Optional[List[HjkMetadata]] = None,
 		bollinger: Optional[BollingerMetadata] = None,
 		rsi_metadata: Optional[RSIMetadata] = None
 	) -> Optional[pd.DataFrame]:

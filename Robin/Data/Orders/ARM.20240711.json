@@ -1,0 +1,74 @@
+[
+    {
+        "uuid": "bab868cd-28b5-4733-9551-d329f076b162",
+        "stock": "ARM",
+        "time": "2024-07-11T08:21:23.141023-04:00",
+        "price": 186.05,
+        "share": 5.0,
+        "remain_portion": 52
+    },
+    {
+        "uuid": "54040289-f11b-4b06-90d6-39e25da24e02",
+        "stock": "ARM",
+        "time": "2024-07-11T08:41:29.799466-04:00",
+        "price": 187.89999999999998,
+        "share": 5.0,
+        "remain_portion": 50
+    },
+    {
+        "uuid": "4b05679d-606b-47d3-a3fe-e3f6c360c85d",
+        "stock": "ARM",
+        "time": "2024-07-11T11:46:18.731600-04:00",
+        "price": 175.83,
+        "share": 5.69,
+        "remain_portion": 28
+    },
+    {
+        "uuid": "0dba7c8c-09b0-47c8-972e-832e0234961a",
+        "stock": "ARM",
+        "time": "2024-07-11T14:05:42.989511-04:00",
+        "price": 173.89,
+        "share": 0.0,
+        "remain_portion": 14
+    },
+    {
+        "uuid": "0dba7c8c-09b0-47c8-972e-832e0234961a",
+        "stock": "ARM",
+        "time": "2024-07-11T14:06:59.617272-04:00",
+        "price": 173.83,
+        "share": 5.749999999999999,
+        "remain_portion": 13
+    },
+    {
+        "uuid": "9e706e53-be85-410d-bc40-77a73b734e21",
+        "stock": "ARM",
+        "time": "2024-07-11T16:25:36.936474-04:00",
+        "price": 174.05,
+        "share": 5.000000000000002,
+        "remain_portion": 10
+    },
+    {
+        "uuid": "a87e8184-2e41-49f3-ba41-48844e42fe66",
+        "stock": "ARM",
+        "time": "2024-07-11T17:21:18.991933-04:00",
+        "price": 173.26000000000002,
+        "share": 5.0,
+        "remain_portion": 8
+    },
+    {
+        "uuid": "dc433dbc-574e-446e-aad0-b7e673a3d007",
+        "stock": "ARM",
+        "time": "2024-07-11T17:36:33.016648-04:00",
+        "price": 173.05,
+        "share": 5.0,
+        "remain_portion": 5
+    },
+    {
+        "uuid": "40b91fc6-be16-403c-a605-fe12f37f26c0",
+        "stock": "ARM",
+        "time": "2024-07-11T18:45:29.014922-04:00",
+        "price": 172.55,
+        "share": 3.0,
+        "remain_portion": 3
+    }
+]

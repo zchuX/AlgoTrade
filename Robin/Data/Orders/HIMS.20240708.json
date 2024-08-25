@@ -1,0 +1,58 @@
+[
+    {
+        "uuid": "13124ad7-c561-4098-b79d-c2cb5cc53489",
+        "stock": "HIMS",
+        "time": "2024-07-08T08:30:47.377351-04:00",
+        "price": 20.74072,
+        "share": 0.0,
+        "remain_portion": 56
+    },
+    {
+        "uuid": "db6fd2f6-a76f-4116-9726-8c7cbe5c196c",
+        "stock": "HIMS",
+        "time": "2024-07-08T14:11:08.874675-04:00",
+        "price": 20.75,
+        "share": 48.19,
+        "remain_portion": 38
+    },
+    {
+        "uuid": "a09561b9-969d-4dab-b98b-973a37165c44",
+        "stock": "HIMS",
+        "time": "2024-07-08T14:41:37.921707-04:00",
+        "price": 20.65,
+        "share": 48.43000000000001,
+        "remain_portion": 36
+    },
+    {
+        "uuid": "63c146c1-88b0-4318-8d43-31db0694632b",
+        "stock": "HIMS",
+        "time": "2024-07-08T16:12:15.874203-04:00",
+        "price": 20.45043,
+        "share": 0.0,
+        "remain_portion": 31
+    },
+    {
+        "uuid": "af0f73f0-d26f-4e8b-9177-935afb85f7d3",
+        "stock": "HIMS",
+        "time": "2024-07-08T16:25:34.251898-04:00",
+        "price": 20.45043,
+        "share": 48.0,
+        "remain_portion": 30
+    },
+    {
+        "uuid": "d14f2d73-79d9-4b55-bcd3-7a7d90b4bc7a",
+        "stock": "HIMS",
+        "time": "2024-07-08T16:40:51.348090-04:00",
+        "price": 20.45043,
+        "share": 0.0,
+        "remain_portion": 29
+    },
+    {
+        "uuid": "6f4459ba-df2a-46f4-a3a5-00100b6e101d",
+        "stock": "HIMS",
+        "time": "2024-07-08T18:30:51.307250-04:00",
+        "price": 20.48046,
+        "share": 0.0,
+        "remain_portion": 28
+    }
+]

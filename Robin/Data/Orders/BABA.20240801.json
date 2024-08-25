@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "9ce3e70d-ba10-4569-b90e-73b773382e62",
+        "stock": "BABA",
+        "time": "2024-08-01T15:01:30.377144-04:00",
+        "price": 77.91,
+        "share": 12.84,
+        "remain_portion": 7
+    },
+    {
+        "uuid": "691a7bad-b45a-472d-acbc-5584b8f7495c",
+        "stock": "BABA",
+        "time": "2024-08-01T16:31:11.854429-04:00",
+        "price": 77.84,
+        "share": 12.0,
+        "remain_portion": 3
+    }
+]

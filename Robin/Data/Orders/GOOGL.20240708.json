@@ -1,0 +1,18 @@
+[
+    {
+        "uuid": "bb73a409-ccea-4717-bc00-7486c1bdbe56",
+        "stock": "GOOGL",
+        "time": "2024-07-08T08:06:44.743122-04:00",
+        "price": 188.95000000000002,
+        "share": 0.0,
+        "remain_portion": 58
+    },
+    {
+        "uuid": "1375f994-6be1-40cd-91de-9fe15765aaf9",
+        "stock": "GOOGL",
+        "time": "2024-07-08T19:55:44.991697-04:00",
+        "price": 189.2025,
+        "share": 8.0,
+        "remain_portion": 28
+    }
+]

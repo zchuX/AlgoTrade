@@ -1,0 +1,58 @@
+[
+    {
+        "uuid": "98eb2f1b-faa6-4e46-aa46-6a159a2fcfe8",
+        "stock": "NVDA",
+        "time": "2024-07-11T11:46:13.145834-04:00",
+        "price": 128.44,
+        "share": 7.79,
+        "remain_portion": 30
+    },
+    {
+        "uuid": "c855787b-cd57-4708-85e8-821c4df57fd8",
+        "stock": "NVDA",
+        "time": "2024-07-11T14:05:30.555481-04:00",
+        "price": 127.33,
+        "share": 0.0,
+        "remain_portion": 14
+    },
+    {
+        "uuid": "c855787b-cd57-4708-85e8-821c4df57fd8",
+        "stock": "NVDA",
+        "time": "2024-07-11T14:06:56.406109-04:00",
+        "price": 127.5,
+        "share": 0.0,
+        "remain_portion": 14
+    },
+    {
+        "uuid": "c855787b-cd57-4708-85e8-821c4df57fd8",
+        "stock": "NVDA",
+        "time": "2024-07-11T14:08:14.285900-04:00",
+        "price": 127.49,
+        "share": 0.0,
+        "remain_portion": 13
+    },
+    {
+        "uuid": "c855787b-cd57-4708-85e8-821c4df57fd8",
+        "stock": "NVDA",
+        "time": "2024-07-11T14:09:18.297474-04:00",
+        "price": 127.54,
+        "share": 7.840000000000001,
+        "remain_portion": 12
+    },
+    {
+        "uuid": "8af85e20-e18e-403b-bfa1-338b4b5c9995",
+        "stock": "NVDA",
+        "time": "2024-07-11T17:11:13.363617-04:00",
+        "price": 126.67,
+        "share": 6.999999999999998,
+        "remain_portion": 9
+    },
+    {
+        "uuid": "30405abc-f6b1-485b-bb86-4c1d5571ed1a",
+        "stock": "NVDA",
+        "time": "2024-07-11T17:26:23.404725-04:00",
+        "price": 126.64999999999999,
+        "share": 7.0,
+        "remain_portion": 7
+    }
+]

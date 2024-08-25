@@ -1,6 +1,7 @@
 import dataclasses
 import glob
 import json
+import typing
 
 from time import sleep
 from datetime import timedelta
@@ -18,7 +19,7 @@ TEST_MODE = False
 TEST_DATE_TIME = datetime(2024, 6, 10, 9, 30, 0, tzinfo=pytz.timezone('US/Eastern'))
 
 
-def prepare_trading_agent(stocks: list[str]):
+def prepare_trading_agent(stocks: typing.List[str]):
 	snapshot_files = glob.glob(f"{PACKAGE_ROOT}/Data/TradingSnapshot/*.json")
 	trade_snapshot = None
 	if snapshot_files:
@@ -44,7 +45,7 @@ def prepare_trading_agent(stocks: list[str]):
 
 def persist_trading_snapshot(
 	trading_agent: TradingAgent,
-	prices: Optional[dict[str, float]] = None,
+	prices: Optional[typing.Dict[str, float]] = None,
 	time: Optional[datetime] = None):
 	snapshot: TradeSnapshot = trading_agent.test_snapshot(prices, time) if TEST_MODE else trading_agent.snapshot()
 	snapshot_json = json.dumps(dataclasses.asdict(snapshot), default=json_serial, indent=4)
@@ -71,7 +72,7 @@ def persist_order_details(order: OrderMetadata):
 
 
 def run_test_cycles(
-	stocks: list[str],
+	stocks: typing.List[str],
 	trading_agent: TradingAgent,
 	stock_info_worker: StockHistoricalCollector,
 	strategy: BaseStrategy
@@ -143,7 +144,7 @@ def intraday_collecting():
 						)
 					elif action.action == Action.SELL:
 						persist_order_details(
-							trading_agent.clean_all_position(
+							trading_agent.clean_positions(
 								symbol=stock,
 								uuid=action.uuid,
 								extended_hour=is_extended_hour
